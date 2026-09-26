@@ -1,0 +1,879 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Video Meet</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f5f7fb;
+      color: #111827;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 240px;
+      background: white;
+      border-right: 1px solid #e5e7eb;
+      padding: 25px 15px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      padding: 0 12px 30px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .nav button {
+      width: 100%;
+      border: none;
+      background: transparent;
+      padding: 13px;
+      border-radius: 12px;
+      text-align: left;
+      font-size: 15px;
+      cursor: pointer;
+    }
+
+    .nav button:hover,
+    .nav button.active {
+      background: #eef2ff;
+    }
+
+    .main {
+      margin-left: 240px;
+      width: calc(100% - 240px);
+      min-height: 100vh;
+      padding: 25px;
+    }
+
+    .topbar {
+      background: white;
+      border-radius: 16px;
+      padding: 18px 22px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .user-area {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .user-avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .content {
+      background: white;
+      border-radius: 20px;
+      padding: 30px;
+      min-height: 500px;
+    }
+
+    .content h1 {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .subtitle {
+      color: #6b7280;
+      margin-bottom: 30px;
+    }
+
+    .matching-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .person-card {
+      border: 1px solid #e5e7eb;
+      border-radius: 18px;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .person-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 12px;
+    }
+
+    .person-card h3 {
+      margin-bottom: 7px;
+    }
+
+    .person-card p {
+      color: #6b7280;
+      margin-bottom: 15px;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .like-btn {
+      background: #2563eb;
+      color: white;
+    }
+
+    .next-btn {
+      background: #e5e7eb;
+      color: #111827;
+    }
+
+    .empty {
+      text-align: center;
+      padding: 70px 20px;
+      color: #6b7280;
+    }
+
+    select {
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 10px;
+      background: white;
+    }
+
+    .logout {
+      background: #fee2e2 !important;
+      color: #dc2626 !important;
+      margin-top: auto;
+    }
+
+    @media (max-width: 800px) {
+
+      .sidebar {
+        width: 100%;
+        height: 70px;
+        top: auto;
+        bottom: 0;
+        left: 0;
+        padding: 8px;
+        border-right: none;
+        border-top: 1px solid #e5e7eb;
+        z-index: 10;
+      }
+
+      .logo {
+        display: none;
+      }
+
+      .nav {
+        flex-direction: row;
+        justify-content: space-around;
+      }
+
+      .nav button {
+        width: auto;
+        padding: 10px;
+        font-size: 13px;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+        padding: 15px;
+        padding-bottom: 90px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .matching-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .content {
+        padding: 20px;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="app">
+
+  <aside class="sidebar">
+
+    <div class="logo">
+      🎥 Video Meet
+    </div>
+
+    <nav class="nav">
+
+      <button class="active">🏠 Home</button>
+      <button>❤️ Matches</button>
+      <button>📹 Video Meet</button>
+      <button>💬 Chat</button>
+      <button>📖 Stories</button>
+      <button>⭐ Rating</button>
+      <button>💎 VIP</button>
+      <button>⏱️ Time</button>
+      <button>⚙️ Settings</button>
+      <button class="logout" id="logoutBtn">🚪 Logout</button>
+
+    </nav>
+
+  </aside>
+
+
+  <main class="main">
+
+    <div class="topbar">
+
+      <div>
+        <strong>Welcome to Video Meet 👋</strong>
+      </div>
+
+      <div class="user-area">
+
+        <select id="languageSelect">
+          <option value="uz">🇺🇿 O‘zbekcha</option>
+          <option value="en">🇬🇧 English</option>
+          <option value="ru">🇷🇺 Русский</option>
+          <option value="es">🇪🇸 Español</option>
+          <option value="ar">🇸🇦 العربية</option>
+          <option value="zh">🇨🇳 中文</option>
+          <option value="de">🇩🇪 Deutsch</option>
+          <option value="fr">🇫🇷 Français</option>
+        </select>
+
+        <img
+          id="userAvatar"
+          class="user-avatar"
+          src=""
+          alt="Avatar"
+        >
+
+        <span id="userName">
+          User
+        </span>
+
+      </div>
+
+    </div>
+
+
+    <section class="content">
+
+      <h1 id="matchingTitle">
+        Sizga mos odamlar
+      </h1>
+
+      <p class="subtitle" id="matchingSubtitle">
+        Sizga mos yangi odamlarni toping.
+      </p>
+
+
+      <div
+        id="matchingGrid"
+        class="matching-grid"
+      ></div>
+
+
+      <div
+        id="emptyMessage"
+        class="empty"
+        style="display:none;"
+      >
+        Hozircha sizga mos odamlar topilmadi.
+      </div>
+
+    </section>
+
+  </main>
+
+</div>
+
+
+<script type="module">
+
+import { createClient }
+from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
+
+
+const supabaseUrl =
+  "https://edixhhalohowfbfvijlw.supabase.co";
+
+
+const supabaseKey =
+  "sb_publishable_VgxbW_5NGpmoQTOs0ydxQw_JvGY49Mz";
+
+
+const supabase =
+  createClient(
+    supabaseUrl,
+    supabaseKey
+  );
+
+
+const translations = {
+
+  uz: {
+    welcome: "Video Meet'ga xush kelibsiz 👋",
+    matching: "Sizga mos odamlar",
+    subtitle: "Sizga mos yangi odamlarni toping.",
+    empty: "Hozircha sizga mos odamlar topilmadi.",
+    like: "❤️ Like",
+    next: "⏭️ Next",
+    home: "🏠 Bosh sahifa",
+    matches: "❤️ Matches",
+    video: "📹 Video Meet",
+    chat: "💬 Chat",
+    stories: "📖 Stories",
+    rating: "⭐ Rating",
+    vip: "💎 VIP",
+    time: "⏱️ Vaqt",
+    settings: "⚙️ Sozlamalar",
+    logout: "🚪 Chiqish"
+  },
+
+  en: {
+    welcome: "Welcome to Video Meet 👋",
+    matching: "People for you",
+    subtitle: "Find new people who match you.",
+    empty: "No matching people found yet.",
+    like: "❤️ Like",
+    next: "⏭️ Next",
+    home: "🏠 Home",
+    matches: "❤️ Matches",
+    video: "📹 Video Meet",
+    chat: "💬 Chat",
+    stories: "📖 Stories",
+    rating: "⭐ Rating",
+    vip: "💎 VIP",
+    time: "⏱️ Time",
+    settings: "⚙️ Settings",
+    logout: "🚪 Logout"
+  },
+
+  ru: {
+    welcome: "Добро пожаловать в Video Meet 👋",
+    matching: "Люди для вас",
+    subtitle: "Найдите подходящих новых людей.",
+    empty: "Подходящих людей пока нет.",
+    like: "❤️ Нравится",
+    next: "⏭️ Далее",
+    home: "🏠 Главная",
+    matches: "❤️ Совпадения",
+    video: "📹 Video Meet",
+    chat: "💬 Чат",
+    stories: "📖 Истории",
+    rating: "⭐ Рейтинг",
+    vip: "💎 VIP",
+    time: "⏱️ Время",
+    settings: "⚙️ Настройки",
+    logout: "🚪 Выйти"
+  },
+
+  es: {
+    welcome: "Bienvenido a Video Meet 👋",
+    matching: "Personas para ti",
+    subtitle: "Encuentra nuevas personas compatibles.",
+    empty: "Aún no hay personas compatibles.",
+    like: "❤️ Me gusta",
+    next: "⏭️ Siguiente",
+    home: "🏠 Inicio",
+    matches: "❤️ Matches",
+    video: "📹 Video Meet",
+    chat: "💬 Chat",
+    stories: "📖 Historias",
+    rating: "⭐ Valoración",
+    vip: "💎 VIP",
+    time: "⏱️ Tiempo",
+    settings: "⚙️ Configuración",
+    logout: "🚪 Salir"
+  },
+
+  ar: {
+    welcome: "مرحبًا بك في Video Meet 👋",
+    matching: "أشخاص مناسبون لك",
+    subtitle: "اعثر على أشخاص جدد مناسبين لك.",
+    empty: "لم يتم العثور على أشخاص مناسبين بعد.",
+    like: "❤️ إعجاب",
+    next: "⏭️ التالي",
+    home: "🏠 الرئيسية",
+    matches: "❤️ التطابقات",
+    video: "📹 Video Meet",
+    chat: "💬 الدردشة",
+    stories: "📖 القصص",
+    rating: "⭐ التقييم",
+    vip: "💎 VIP",
+    time: "⏱️ الوقت",
+    settings: "⚙️ الإعدادات",
+    logout: "🚪 تسجيل الخروج"
+  },
+
+  zh: {
+    welcome: "欢迎来到 Video Meet 👋",
+    matching: "为你推荐的人",
+    subtitle: "寻找与你匹配的新朋友。",
+    empty: "暂时没有找到匹配的人。",
+    like: "❤️ 喜欢",
+    next: "⏭️ 下一个",
+    home: "🏠 首页",
+    matches: "❤️ 匹配",
+    video: "📹 Video Meet",
+    chat: "💬 聊天",
+    stories: "📖 故事",
+    rating: "⭐ 评分",
+    vip: "💎 VIP",
+    time: "⏱️ 时间",
+    settings: "⚙️ 设置",
+    logout: "🚪 退出"
+  },
+
+  de: {
+    welcome: "Willkommen bei Video Meet 👋",
+    matching: "Menschen für dich",
+    subtitle: "Finde neue passende Menschen.",
+    empty: "Noch keine passenden Personen gefunden.",
+    like: "❤️ Gefällt mir",
+    next: "⏭️ Weiter",
+    home: "🏠 Startseite",
+    matches: "❤️ Matches",
+    video: "📹 Video Meet",
+    chat: "💬 Chat",
+    stories: "📖 Stories",
+    rating: "⭐ Bewertung",
+    vip: "💎 VIP",
+    time: "⏱️ Zeit",
+    settings: "⚙️ Einstellungen",
+    logout: "🚪 Abmelden"
+  },
+
+  fr: {
+    welcome: "Bienvenue sur Video Meet 👋",
+    matching: "Personnes pour vous",
+    subtitle: "Trouvez de nouvelles personnes compatibles.",
+    empty: "Aucune personne compatible pour le moment.",
+    like: "❤️ J'aime",
+    next: "⏭️ Suivant",
+    home: "🏠 Accueil",
+    matches: "❤️ Matchs",
+    video: "📹 Video Meet",
+    chat: "💬 Chat",
+    stories: "📖 Stories",
+    rating: "⭐ Évaluation",
+    vip: "💎 VIP",
+    time: "⏱️ Temps",
+    settings: "⚙️ Paramètres",
+    logout: "🚪 Déconnexion"
+  }
+
+};
+
+
+const languageSelect =
+  document.getElementById("languageSelect");
+
+
+function applyLanguage(language) {
+
+  const t =
+    translations[language] || translations.uz;
+
+  document.documentElement.lang =
+    language;
+
+  document.documentElement.dir =
+    language === "ar"
+      ? "rtl"
+      : "ltr";
+
+  document.querySelector(".topbar strong")
+    .textContent =
+      t.welcome;
+
+  document.getElementById("matchingTitle")
+    .textContent =
+      t.matching;
+
+  document.getElementById("matchingSubtitle")
+    .textContent =
+      t.subtitle;
+
+  document.getElementById("emptyMessage")
+    .textContent =
+      t.empty;
+
+  const buttons =
+    document.querySelectorAll(".nav button");
+
+  buttons[0].textContent = t.home;
+  buttons[1].textContent = t.matches;
+  buttons[2].textContent = t.video;
+  buttons[3].textContent = t.chat;
+  buttons[4].textContent = t.stories;
+  buttons[5].textContent = t.rating;
+  buttons[6].textContent = t.vip;
+  buttons[7].textContent = t.time;
+  buttons[8].textContent = t.settings;
+  buttons[9].textContent = t.logout;
+
+  localStorage.setItem(
+    "videoMeetLanguage",
+    language
+  );
+
+}
+
+
+const savedLanguage =
+  localStorage.getItem(
+    "videoMeetLanguage"
+  ) || "uz";
+
+
+languageSelect.value =
+  translations[savedLanguage]
+    ? savedLanguage
+    : "uz";
+
+
+applyLanguage(
+  languageSelect.value
+);
+
+
+languageSelect.addEventListener(
+  "change",
+  function() {
+
+    applyLanguage(
+      languageSelect.value
+    );
+
+    loadMatchingProfiles();
+
+  }
+);
+
+
+async function loadUser() {
+
+  const result =
+    await supabase.auth.getUser();
+
+  const user =
+    result.data.user;
+
+  if (!user) {
+
+    window.location.href =
+      "/";
+
+    return null;
+
+  }
+
+  document.getElementById(
+    "userName"
+  ).textContent =
+    user.user_metadata?.full_name ||
+    user.user_metadata?.name ||
+    "User";
+
+  document.getElementById(
+    "userAvatar"
+  ).src =
+    user.user_metadata?.avatar_url ||
+    user.user_metadata?.picture ||
+    "";
+
+  return user;
+
+}
+
+
+async function loadMatchingProfiles() {
+
+  const result =
+    await supabase
+      .rpc("get_matching_profiles");
+
+  const grid =
+    document.getElementById(
+      "matchingGrid"
+    );
+
+  const empty =
+    document.getElementById(
+      "emptyMessage"
+    );
+
+  grid.innerHTML = "";
+
+  if (result.error) {
+
+    console.error(
+      result.error
+    );
+
+    empty.style.display =
+      "block";
+
+    return;
+
+  }
+
+  const profiles =
+    result.data || [];
+
+  if (profiles.length === 0) {
+
+    empty.style.display =
+      "block";
+
+    return;
+
+  }
+
+  empty.style.display =
+    "none";
+
+  const language =
+    languageSelect.value;
+
+  const t =
+    translations[language] ||
+    translations.uz;
+
+
+  profiles.forEach(function(profile) {
+
+    const card =
+      document.createElement("div");
+
+    card.className =
+      "person-card";
+
+
+    const avatar =
+      document.createElement("img");
+
+    avatar.className =
+      "person-avatar";
+
+    avatar.src =
+      profile["avatar url"] || "";
+
+    avatar.alt =
+      profile["full name"] ||
+      profile.username;
+
+
+    const name =
+      document.createElement("h3");
+
+    name.textContent =
+      profile["full name"] ||
+      profile.username;
+
+
+    const username =
+      document.createElement("p");
+
+    username.textContent =
+      "@" + profile.username;
+
+
+    const age =
+      document.createElement("p");
+
+    age.textContent =
+      "🎂 " + (profile.age || "-");
+
+
+    const actions =
+      document.createElement("div");
+
+    actions.className =
+      "actions";
+
+
+    const like =
+      document.createElement("button");
+
+    like.className =
+      "like-btn";
+
+    like.textContent =
+      t.like;
+
+
+    like.addEventListener(
+      "click",
+      async function() {
+
+        const userResult =
+          await supabase.auth.getUser();
+
+        const user =
+          userResult.data.user;
+
+        if (!user) return;
+
+        const likeResult =
+          await supabase
+            .from("likes")
+            .insert({
+
+              from_user:
+                user.id,
+
+              to_user:
+                profile.id
+
+            });
+
+        if (
+          likeResult.error &&
+          likeResult.error.code !==
+          "23505"
+        ) {
+
+          console.error(
+            likeResult.error
+          );
+
+          return;
+
+        }
+
+        like.textContent =
+          "❤️";
+
+        like.disabled =
+          true;
+
+      }
+    );
+
+
+    const next =
+      document.createElement("button");
+
+    next.className =
+      "next-btn";
+
+    next.textContent =
+      t.next;
+
+
+    next.addEventListener(
+      "click",
+      function() {
+
+        card.remove();
+
+      }
+    );
+
+
+    actions.appendChild(
+      like
+    );
+
+    actions.appendChild(
+      next
+    );
+
+
+    card.appendChild(
+      avatar
+    );
+
+    card.appendChild(
+      name
+    );
+
+    card.appendChild(
+      username
+    );
+
+    card.appendChild(
+      age
+    );
+
+    card.appendChild(
+      actions
+    );
+
+
+    grid.appendChild(
+      card
+    );
+
+  });
+
+}
+
+
+document.getElementById(
+  "logoutBtn"
+).addEventListener(
+  "click",
+  async function() {
+
+    await supabase.auth.signOut();
+
+    window.location.href =
+      "/";
+
+  }
+);
+
+
+const user =
+  await loadUser();
+
+if (user) {
+
+  await loadMatchingProfiles();
+
+}
+
+</script>
+
+</body>
+        </html>
