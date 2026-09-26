@@ -969,20 +969,21 @@ function applyLanguage(language) {
   document.getElementById("emptyMessage")
     .textContent =
       t.empty;
-
   const buttons =
-    document.querySelectorAll(".nav button");
+  document.querySelectorAll(".nav > button");
 
-  buttons[0].textContent = t.home;
-  buttons[1].textContent = t.matches;
-  buttons[2].textContent = t.video;
-  buttons[3].textContent = t.chat;
-  buttons[4].textContent = t.stories;
-  buttons[5].textContent = t.rating;
-  buttons[6].textContent = t.vip;
-  buttons[7].textContent = t.time;
-  buttons[8].textContent = t.settings;
-  buttons[9].textContent = t.logout;
+buttons[0].textContent = t.home;
+buttons[1].textContent = t.matches;
+buttons[2].textContent = t.video;
+buttons[3].textContent = t.chat;
+
+const secondaryButtons =
+  document.querySelectorAll("#secondaryNav > button");
+
+secondaryButtons[0].textContent = t.stories;
+secondaryButtons[1].textContent = t.vip;
+secondaryButtons[2].textContent = t.settings;
+secondaryButtons[3].textContent = t.logout;
 
   localStorage.setItem(
     "videoMeetLanguage",
