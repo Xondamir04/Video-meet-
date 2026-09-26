@@ -192,17 +192,20 @@
       .logo {
         display: none;
       }
+.nav {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 4px;
+  width: 100%;
+}
 
-      .nav {
-        flex-direction: row;
-        justify-content: space-around;
-      }
-
-      .nav button {
-        width: auto;
-        padding: 10px;
-        font-size: 13px;
-      }
+.nav button {
+  width: 100%;
+  padding: 8px 2px;
+  font-size: 11px;
+  white-space: nowrap;
+    }
+  
 
       .main {
         margin-left: 0;
