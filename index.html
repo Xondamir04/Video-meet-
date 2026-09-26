@@ -679,15 +679,14 @@
     ❤️ New match
   </div>
 
-</div>
+<div class="section-heading">
+  <h2 id="sectionTitle">
+    Video Meet bilan tanishing
+  </h2>
 
-  </section>  <div class="section-heading"><h2>
-  Video Meet bilan tanishing
-</h2>
-
-<p>
-  Yangi odamlar bilan tanishish uchun kerak bo‘lgan hamma narsa.
-</p>
+  <p id="sectionSubtitle">
+    Yangi odamlar bilan tanishish uchun kerak bo‘lgan hamma narsa.
+  </p>
 
   </div>  <div class="cards"><div class="card">
 
@@ -829,9 +828,10 @@
   </div>  <section
     id="matchingSection"
     style="display:none;"
-  ><h2 id="matchingTitle">
+  >
+    <h2 id="matchingTitle">
   Sizga mos odamlar
-</h2>
+  </h2>
 
 <div id="matchingCards"></div>
 
@@ -888,6 +888,7 @@ const translations = {
     error: "Xatolik: ",
     sectionTitle: "Video Meet bilan tanishing",
 sectionSubtitle: "Yangi odamlar bilan tanishish uchun kerak bo‘lgan hamma narsa.",
+    matching: "Sizga mos odamlar",
   },
 
   en: {
@@ -918,6 +919,7 @@ sectionSubtitle: "Yangi odamlar bilan tanishish uchun kerak bo‘lgan hamma nars
     error: "Error: ",
     sectionTitle: "Discover Video Meet",
 sectionSubtitle: "Everything you need to meet new people.",
+    matching: "People for you",
   },
 
   ru: {
@@ -948,6 +950,7 @@ sectionSubtitle: "Everything you need to meet new people.",
     error: "Ошибка: ",
     sectionTitle: "Знакомьтесь с Video Meet",
 sectionSubtitle: "Всё необходимое для знакомства с новыми людьми.",
+    matching: "Люди для вас",
   },
 
   es: {
@@ -978,6 +981,7 @@ sectionSubtitle: "Всё необходимое для знакомства с �
     error: "Error: ",
     sectionTitle: "Descubre Video Meet",
 sectionSubtitle: "Todo lo que necesitas para conocer gente nueva.",
+    matching: "Personas para ti",
   },
 
   ar: {
@@ -1008,6 +1012,7 @@ sectionSubtitle: "Todo lo que necesitas para conocer gente nueva.",
     error: "خطأ: ",
     sectionTitle: "اكتشف Video Meet",
 sectionSubtitle: "كل ما تحتاجه للتعرف على أشخاص جدد.",
+    matching: "أشخاص مناسبون لك",
   },
 
   zh: {
@@ -1038,6 +1043,7 @@ sectionSubtitle: "كل ما تحتاجه للتعرف على أشخاص جدد."
     error: "错误：",
     sectionTitle: "探索 Video Meet",
 sectionSubtitle: "认识新朋友所需的一切。",
+    matching: "为你推荐的人",
   },
 
   de: {
@@ -1068,6 +1074,7 @@ sectionSubtitle: "认识新朋友所需的一切。",
     error: "Fehler: ",
     sectionTitle: "Entdecke Video Meet",
 sectionSubtitle: "Alles, was du brauchst, um neue Menschen kennenzulernen.",
+    matching: "Menschen für dich",
   },
 
   fr: {
@@ -1098,6 +1105,7 @@ sectionSubtitle: "Alles, was du brauchst, um neue Menschen kennenzulernen.",
     error: "Erreur : ",
     sectionTitle: "Découvrez Video Meet",
 sectionSubtitle: "Tout ce dont vous avez besoin pour rencontrer de nouvelles personnes.",
+    matching: "Personnes pour vous",
   }
 
 };
@@ -1125,6 +1133,11 @@ function changeLanguage(language) {
 
   document.getElementById("subtitle").textContent =
     t.subtitle;
+  document.getElementById("sectionTitle").textContent =
+  t.sectionTitle;
+
+document.getElementById("sectionSubtitle").textContent =
+  t.sectionSubtitle;
 
   document.getElementById("loginBtn").textContent =
     t.login;
