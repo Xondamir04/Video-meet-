@@ -1072,7 +1072,112 @@ supabase.auth.onAuthStateChange(
 
 
 loadProfile();
+async function loadMatchingProfiles() {
 
+  const result = await supabase
+    .rpc("get_matching_profiles");
+
+  if (result.error) {
+    console.error("Matching error:", result.error);
+    return;
+  }
+
+  const profiles = result.data || [];
+
+  const section =
+    document.getElementById("matchingSection");
+
+  const cards =
+    document.getElementById("matchingCards");
+
+  section.style.display = "block";
+
+  cards.innerHTML = "";
+
+  profiles.forEach(function(profile) {
+
+    const card = document.createElement("div");
+
+    card.style.background = "white";
+    card.style.padding = "25px";
+    card.style.borderRadius = "18px";
+    card.style.boxShadow = "0 4px 20px rgba(0,0,0,0.06)";
+
+    card.innerHTML = `
+      <img
+        src="${profile["avatar url"] || ""}"
+        style="width:90px;height:90px;border-radius:50%;object-fit:cover;"
+      >
+
+      <h3 style="margin:12px 0 6px;">
+        ${profile["full name"] || profile.username}
+      </h3>
+
+      <p style="color:#6b7280;">
+        @${profile.username}
+      </p>
+
+      <p style="margin-top:8px;">
+        🎂 ${profile.age || "-"}
+      </p>
+
+      <button
+        style="margin-top:15px;background:#2563eb;color:white;"
+        onclick="likeUser('${profile.id}')"
+      >
+        ❤️ Like
+      </button>
+
+      <button
+        style="margin-top:10px;background:#e5e7eb;color:#111827;"
+        onclick="this.parentElement.remove()"
+      >
+        ⏭️ Next
+      </button>
+    `;
+
+    cards.appendChild(card);
+
+  });
+
+}
+
+
+window.likeUser = async function(userId) {
+
+  const result =
+    await supabase
+      .from("likes")
+      .insert({
+        from_user: (await supabase.auth.getUser()).data.user.id,
+        to_user: userId
+      });
+
+  if (result.error) {
+
+    if (result.error.code === "23505") {
+      alert("Siz bu profilni allaqachon yoqtirgansiz.");
+    } else {
+      console.error(result.error);
+    }
+
+    return;
+  }
+
+  alert("❤️ Like yuborildi!");
+
+};
+
+
+supabase.auth.onAuthStateChange(
+  function(event, session) {
+
+    if (session) {
+      loadMatchingProfiles();
+    }
+
+  }
+);
 </script>
 <section id="matchingSection" style="display:none; margin-top:50px;">
   <h2 id="matchingTitle">Sizga mos odamlar</h2>
