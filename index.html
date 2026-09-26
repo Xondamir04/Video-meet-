@@ -25,7 +25,7 @@
       justify-content: space-between;
       align-items: center;
       gap: 15px;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
     }
 
     .logo {
@@ -39,12 +39,13 @@
       gap: 10px;
     }
 
-    select {
-      padding: 10px;
+    select,
+    input {
+      padding: 12px;
       border: 1px solid #d1d5db;
-      border-radius: 9px;
+      border-radius: 10px;
       background: white;
-      cursor: pointer;
+      font-size: 15px;
     }
 
     button {
@@ -96,7 +97,7 @@
       margin: 30px auto;
       padding: 30px;
       border-radius: 20px;
-      box-shadow: 0 5px 25px rgba(0, 0, 0, 0.08);
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
     }
 
     .avatar {
@@ -123,12 +124,9 @@
       font-weight: bold;
     }
 
-    input {
+    input,
+    .gender-select {
       width: 100%;
-      padding: 13px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 15px;
     }
 
     #saveBtn {
@@ -155,7 +153,7 @@
       background: white;
       padding: 30px 20px;
       border-radius: 18px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
     }
 
     .card h3 {
@@ -255,6 +253,40 @@
       >
 
 
+      <label id="ageLabel" for="ageInput">
+        Yosh
+      </label>
+
+      <input
+        id="ageInput"
+        type="number"
+        min="18"
+        max="100"
+        placeholder="Masalan: 22"
+      >
+
+
+      <label id="genderLabel" for="genderSelect">
+        Jins
+      </label>
+
+      <select id="genderSelect" class="gender-select">
+
+        <option value="">
+          Jinsni tanlang
+        </option>
+
+        <option value="male">
+          👨 Erkak
+        </option>
+
+        <option value="female">
+          👩 Ayol
+        </option>
+
+      </select>
+
+
       <button id="saveBtn">
         Profilni saqlash
       </button>
@@ -269,8 +301,12 @@
   <div class="cards">
 
     <div class="card">
-      <div style="font-size: 40px;">👤</div>
-      <h3 id="profileTitle">Profil</h3>
+      <div style="font-size:40px;">👤</div>
+
+      <h3 id="profileTitle">
+        Profil
+      </h3>
+
       <p id="profileText">
         O‘z profilingizni yarating.
       </p>
@@ -278,8 +314,12 @@
 
 
     <div class="card">
-      <div style="font-size: 40px;">📹</div>
-      <h3 id="videoTitle">Video Meet</h3>
+      <div style="font-size:40px;">📹</div>
+
+      <h3 id="videoTitle">
+        Video Meet
+      </h3>
+
       <p id="videoText">
         Video suhbatlar qiling.
       </p>
@@ -287,8 +327,12 @@
 
 
     <div class="card">
-      <div style="font-size: 40px;">💬</div>
-      <h3 id="chatTitle">Chat</h3>
+      <div style="font-size:40px;">💬</div>
+
+      <h3 id="chatTitle">
+        Chat
+      </h3>
+
       <p id="chatText">
         Yangi odamlar bilan yozishing.
       </p>
@@ -313,10 +357,11 @@ const supabaseKey =
   "sb_publishable_VgxbW_5NGpmoQTOs0ydxQw_JvGY49Mz";
 
 
-const supabase = createClient(
-  supabaseUrl,
-  supabaseKey
-);
+const supabase =
+  createClient(
+    supabaseUrl,
+    supabaseKey
+  );
 
 
 const translations = {
@@ -331,6 +376,12 @@ const translations = {
     usernamePlaceholder: "Masalan: ali123",
     name: "Ism",
     namePlaceholder: "Ismingiz",
+    age: "Yosh",
+    agePlaceholder: "Masalan: 22",
+    gender: "Jins",
+    genderPlaceholder: "Jinsni tanlang",
+    male: "👨 Erkak",
+    female: "👩 Ayol",
     save: "Profilni saqlash",
     profile: "Profil",
     profileText: "O‘z profilingizni yarating.",
@@ -353,6 +404,12 @@ const translations = {
     usernamePlaceholder: "Например: ali123",
     name: "Имя",
     namePlaceholder: "Ваше имя",
+    age: "Возраст",
+    agePlaceholder: "Например: 22",
+    gender: "Пол",
+    genderPlaceholder: "Выберите пол",
+    male: "👨 Мужчина",
+    female: "👩 Женщина",
     save: "Сохранить профиль",
     profile: "Профиль",
     profileText: "Создайте свой профиль.",
@@ -375,6 +432,12 @@ const translations = {
     usernamePlaceholder: "For example: ali123",
     name: "Name",
     namePlaceholder: "Your name",
+    age: "Age",
+    agePlaceholder: "For example: 22",
+    gender: "Gender",
+    genderPlaceholder: "Select gender",
+    male: "👨 Male",
+    female: "👩 Female",
     save: "Save profile",
     profile: "Profile",
     profileText: "Create your profile.",
@@ -396,9 +459,13 @@ const languageSelect =
 
 function changeLanguage(language) {
 
-  const t = translations[language];
+  const t =
+    translations[language];
 
-  document.documentElement.lang = language;
+
+  document.documentElement.lang =
+    language;
+
 
   document.getElementById("title").textContent =
     t.title;
@@ -427,6 +494,15 @@ function changeLanguage(language) {
   document.getElementById("nameInput").placeholder =
     t.namePlaceholder;
 
+  document.getElementById("ageLabel").textContent =
+    t.age;
+
+  document.getElementById("ageInput").placeholder =
+    t.agePlaceholder;
+
+  document.getElementById("genderLabel").textContent =
+    t.gender;
+
   document.getElementById("saveBtn").textContent =
     t.save;
 
@@ -448,19 +524,40 @@ function changeLanguage(language) {
   document.getElementById("chatText").textContent =
     t.chatText;
 
+
+  const genderSelect =
+    document.getElementById("genderSelect");
+
+
+  genderSelect.options[0].textContent =
+    t.genderPlaceholder;
+
+  genderSelect.options[1].textContent =
+    t.male;
+
+  genderSelect.options[2].textContent =
+    t.female;
+
+
   localStorage.setItem(
     "videoMeetLanguage",
     language
   );
+
 }
 
 
 const savedLanguage =
   localStorage.getItem("videoMeetLanguage") || "uz";
 
-languageSelect.value = savedLanguage;
 
-changeLanguage(savedLanguage);
+languageSelect.value =
+  savedLanguage;
+
+
+changeLanguage(
+  savedLanguage
+);
 
 
 languageSelect.addEventListener(
@@ -502,6 +599,12 @@ const username =
 const nameInput =
   document.getElementById("nameInput");
 
+const ageInput =
+  document.getElementById("ageInput");
+
+const genderSelect =
+  document.getElementById("genderSelect");
+
 const saveBtn =
   document.getElementById("saveBtn");
 
@@ -517,14 +620,19 @@ async function login() {
       provider: "google",
 
       options: {
-        redirectTo: window.location.origin
+        redirectTo:
+          window.location.origin
       }
 
     });
 
 
   if (result.error) {
-    alert(result.error.message);
+
+    alert(
+      result.error.message
+    );
+
   }
 
 }
@@ -547,6 +655,7 @@ async function loadProfile() {
   const result =
     await supabase.auth.getUser();
 
+
   const user =
     result.data.user;
 
@@ -566,6 +675,7 @@ async function loadProfile() {
       "none";
 
     return;
+
   }
 
 
@@ -597,8 +707,10 @@ async function loadProfile() {
   avatar.src =
     googleAvatar;
 
+
   fullName.textContent =
     googleName;
+
 
   email.textContent =
     user.email || "";
@@ -619,6 +731,7 @@ async function loadProfile() {
     );
 
     return;
+
   }
 
 
@@ -635,12 +748,25 @@ async function loadProfile() {
       profile["full name"] ||
       googleName;
 
+    ageInput.value =
+      profile.age || "";
+
+    genderSelect.value =
+      profile.gender || "";
+
   } else {
 
-    username.value = "";
+    username.value =
+      "";
 
     nameInput.value =
       googleName;
+
+    ageInput.value =
+      "";
+
+    genderSelect.value =
+      "";
 
   }
 
@@ -654,6 +780,7 @@ saveBtn.addEventListener(
     const result =
       await supabase.auth.getUser();
 
+
     const user =
       result.data.user;
 
@@ -666,6 +793,7 @@ saveBtn.addEventListener(
     const language =
       languageSelect.value;
 
+
     const t =
       translations[language];
 
@@ -677,8 +805,49 @@ saveBtn.addEventListener(
     const newName =
       nameInput.value.trim();
 
+
     const newUsername =
       username.value.trim();
+
+
+    const newAge =
+      ageInput.value
+        ? Number(ageInput.value)
+        : null;
+
+
+    const newGender =
+      genderSelect.value;
+
+
+    if (
+      newAge !== null &&
+      (newAge < 18 || newAge > 100)
+    ) {
+
+      status.textContent =
+        t.error +
+        "18–100";
+
+
+      return;
+
+    }
+
+
+    if (
+      newGender !== "male" &&
+      newGender !== "female"
+    ) {
+
+      status.textContent =
+        t.error +
+        "Gender";
+
+
+      return;
+
+    }
 
 
     const updateResult =
@@ -686,12 +855,23 @@ saveBtn.addEventListener(
         .from("profiles")
         .update({
 
-          username: newUsername,
+          username:
+            newUsername,
 
-          "full name": newName
+          "full name":
+            newName,
+
+          age:
+            newAge,
+
+          gender:
+            newGender
 
         })
-        .eq("id", user.id);
+        .eq(
+          "id",
+          user.id
+        );
 
 
     if (updateResult.error) {
@@ -700,7 +880,9 @@ saveBtn.addEventListener(
         t.error +
         updateResult.error.message;
 
+
       return;
+
     }
 
 
@@ -742,4 +924,4 @@ loadProfile();
 </script>
 
 </body>
-        </html>
+  </html>
