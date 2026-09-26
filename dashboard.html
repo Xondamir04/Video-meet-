@@ -872,7 +872,21 @@ if (user) {
   await loadMatchingProfiles();
 
 }
+document.querySelectorAll("[data-section]").forEach(item => {
+  item.addEventListener("click", function () {
+    const section = this.getAttribute("data-section");
 
+    document.querySelectorAll("main > section").forEach(s => {
+      s.style.display = "none";
+    });
+
+    const target = document.getElementById(section);
+
+    if (target) {
+      target.style.display = "block";
+    }
+  });
+});
 </script>
 
 </body>
