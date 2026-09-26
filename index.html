@@ -1,11 +1,7 @@
-<!DOCTYPE html>
-<html lang="uz">
+<!DOCTYPE html><html lang="uz">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Video Meet</title>
-
-  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Video Meet</title>  <style>
     * {
       box-sizing: border-box;
       margin: 0;
@@ -13,24 +9,64 @@
       font-family: Arial, sans-serif;
     }
 
-    body {
-      background: #f5f7fb;
-      color: #111827;
+    html {
+      scroll-behavior: smooth;
     }
 
+    body {
+      min-height: 100vh;
+      color: #111827;
+      background:
+        radial-gradient(circle at 10% 10%, rgba(37,99,235,.10), transparent 30%),
+        radial-gradient(circle at 90% 20%, rgba(236,72,153,.10), transparent 30%),
+        #f7f9fc;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    button {
+      cursor: pointer;
+    }
+
+    /* HEADER */
+
     header {
-      background: white;
-      padding: 18px 30px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      width: 100%;
+      padding: 16px 5%;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 15px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+      gap: 20px;
+      background: rgba(255,255,255,.88);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(229,231,235,.8);
     }
 
     .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
       font-size: 22px;
-      font-weight: bold;
+      font-weight: 800;
+      letter-spacing: -.5px;
+    }
+
+    .logo-mark {
+      width: 38px;
+      height: 38px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: linear-gradient(135deg,#2563eb,#7c3aed);
+      box-shadow: 0 8px 20px rgba(37,99,235,.25);
     }
 
     .header-right {
@@ -39,65 +75,292 @@
       gap: 10px;
     }
 
-    select,
-    input {
-      padding: 12px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
+    #languageSelect {
+      padding: 11px 14px;
+      border: 1px solid #dbe1ea;
+      border-radius: 12px;
       background: white;
-      font-size: 15px;
+      color: #111827;
+      outline: none;
+    }
+
+    #languageSelect:focus {
+      border-color: #2563eb;
     }
 
     button {
       border: none;
-      border-radius: 10px;
+      border-radius: 12px;
       padding: 12px 20px;
-      font-size: 15px;
-      cursor: pointer;
+      font-weight: 700;
+      transition: .2s ease;
+    }
+
+    button:hover {
+      transform: translateY(-1px);
     }
 
     #loginBtn {
-      background: #111827;
       color: white;
+      background: #111827;
+      box-shadow: 0 8px 20px rgba(17,24,39,.16);
     }
 
     #logoutBtn {
-      background: #ef4444;
-      color: white;
       display: none;
+      color: white;
+      background: #ef4444;
     }
 
-    #mainLoginBtn {
-      background: #2563eb;
-      color: white;
-    }
+    /* HERO */
 
     main {
-      max-width: 1000px;
+      max-width: 1180px;
       margin: auto;
-      padding: 60px 20px;
-      text-align: center;
+      padding: 55px 20px 80px;
+    }
+
+    .hero {
+      min-height: 500px;
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      align-items: center;
+      gap: 50px;
+    }
+
+    .hero-content {
+      text-align: left;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 8px 13px;
+      margin-bottom: 20px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #4338ca;
+      font-size: 14px;
+      font-weight: 700;
     }
 
     h1 {
-      font-size: 42px;
-      margin-bottom: 15px;
+      max-width: 700px;
+      font-size: clamp(40px,6vw,68px);
+      line-height: 1.02;
+      letter-spacing: -2.5px;
+      margin-bottom: 22px;
+    }
+
+    h1 span {
+      background: linear-gradient(90deg,#2563eb,#7c3aed,#ec4899);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
     }
 
     .subtitle {
+      max-width: 620px;
       color: #6b7280;
-      font-size: 18px;
-      margin-bottom: 35px;
+      font-size: 19px;
+      line-height: 1.7;
+      margin-bottom: 30px;
     }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    #mainLoginBtn {
+      color: white;
+      background: linear-gradient(135deg,#2563eb,#4f46e5);
+      padding: 15px 25px;
+      font-size: 16px;
+      box-shadow: 0 12px 28px rgba(37,99,235,.28);
+    }
+
+    .trust-text {
+      color: #6b7280;
+      font-size: 13px;
+      margin-top: 15px;
+    }
+
+    /* HERO VISUAL */
+
+    .hero-visual {
+      position: relative;
+      min-height: 430px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .visual-card {
+      width: 330px;
+      min-height: 400px;
+      padding: 18px;
+      border-radius: 28px;
+      background: white;
+      border: 1px solid rgba(229,231,235,.8);
+      box-shadow: 0 25px 70px rgba(15,23,42,.12);
+      transform: rotate(2deg);
+    }
+
+    .video-preview {
+      position: relative;
+      height: 260px;
+      overflow: hidden;
+      border-radius: 22px;
+      background:
+        linear-gradient(135deg,rgba(37,99,235,.35),rgba(236,72,153,.3)),
+        #111827;
+    }
+
+    .video-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .online-badge {
+      position: absolute;
+      left: 14px;
+      top: 14px;
+      padding: 7px 10px;
+      border-radius: 999px;
+      color: white;
+      background: rgba(17,24,39,.72);
+      backdrop-filter: blur(8px);
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .preview-info {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 17px;
+    }
+
+    .preview-info h3 {
+      margin-bottom: 5px;
+    }
+
+    .preview-info p {
+      color: #6b7280;
+      font-size: 13px;
+    }
+
+    .heart {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: #fce7f3;
+      color: #db2777;
+      font-size: 20px;
+    }
+
+    .floating-card {
+      position: absolute;
+      padding: 13px 16px;
+      border-radius: 16px;
+      background: white;
+      box-shadow: 0 15px 35px rgba(15,23,42,.12);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .floating-one {
+      top: 55px;
+      right: -5px;
+    }
+
+    .floating-two {
+      bottom: 45px;
+      left: -20px;
+    }
+
+    /* FEATURES */
+
+    .section-heading {
+      text-align: center;
+      margin: 80px 0 30px;
+    }
+
+    .section-heading h2 {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .section-heading p {
+      color: #6b7280;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3,1fr);
+      gap: 20px;
+    }
+
+    .card {
+      background: rgba(255,255,255,.92);
+      padding: 30px 24px;
+      border-radius: 22px;
+      border: 1px solid #e8ebf1;
+      box-shadow: 0 8px 30px rgba(15,23,42,.05);
+      transition: .25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 18px 40px rgba(15,23,42,.09);
+    }
+
+    .card-icon {
+      width: 58px;
+      height: 58px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 17px;
+      background: #eef2ff;
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .card h3 {
+      font-size: 19px;
+      margin-bottom: 9px;
+    }
+
+    .card p {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+
+    /* PROFILE */
 
     .profile {
       display: none;
-      background: white;
-      max-width: 450px;
+      max-width: 500px;
       margin: 30px auto;
       padding: 30px;
-      border-radius: 20px;
-      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+      border-radius: 25px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      box-shadow: 0 20px 60px rgba(15,23,42,.10);
+    }
+
+    .profile-top {
+      text-align: center;
+      margin-bottom: 25px;
     }
 
     .avatar {
@@ -105,239 +368,476 @@
       height: 100px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 15px;
+      margin-bottom: 12px;
+      border: 4px solid #eef2ff;
     }
 
     .email {
       color: #6b7280;
-      margin: 8px 0 25px;
+      margin-top: 7px;
     }
 
     .edit-box {
       text-align: left;
-      margin-top: 20px;
     }
 
     label {
       display: block;
-      margin: 12px 0 6px;
-      font-weight: bold;
+      margin: 15px 0 7px;
+      font-size: 14px;
+      font-weight: 700;
     }
 
     input,
     .gender-select {
       width: 100%;
+      padding: 13px 14px;
+      border: 1px solid #dbe1ea;
+      border-radius: 12px;
+      outline: none;
+      background: white;
+    }
+
+    input:focus,
+    .gender-select:focus {
+      border-color: #2563eb;
+      box-shadow: 0 0 0 3px rgba(37,99,235,.10);
     }
 
     #saveBtn {
       width: 100%;
-      margin-top: 18px;
-      background: #2563eb;
+      margin-top: 20px;
       color: white;
+      background: linear-gradient(135deg,#2563eb,#4f46e5);
     }
 
     #status {
       text-align: center;
+      min-height: 20px;
       margin-top: 12px;
       font-size: 14px;
     }
 
-    .cards {
+    /* MATCHING */
+
+    #matchingSection {
+      margin-top: 70px;
+    }
+
+    #matchingSection h2 {
+      text-align: center;
+      font-size: 30px;
+      margin-bottom: 25px;
+    }
+
+    #matchingCards {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(3,1fr);
       gap: 20px;
-      margin-top: 50px;
     }
 
-    .card {
-      background: white;
+    /* FOOTER */
+
+    footer {
       padding: 30px 20px;
-      border-radius: 18px;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.06);
-    }
-
-    .card h3 {
-      margin: 12px 0 8px;
-    }
-
-    .card p {
+      text-align: center;
       color: #6b7280;
+      border-top: 1px solid #e5e7eb;
+      background: white;
+      font-size: 14px;
     }
 
-    @media (max-width: 700px) {
+    /* MOBILE */
+
+    @media (max-width: 800px) {
+
       header {
-        padding: 15px;
-        flex-direction: column;
+        padding: 12px 15px;
+      }
+
+      .logo {
+        font-size: 18px;
+      }
+
+      .logo-mark {
+        width: 34px;
+        height: 34px;
+      }
+
+      .header-right {
+        gap: 7px;
+      }
+
+      #languageSelect {
+        max-width: 125px;
+        padding: 10px 8px;
+      }
+
+      #loginBtn,
+      #logoutBtn {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+
+      main {
+        padding: 30px 15px 60px;
+      }
+
+      .hero {
+        grid-template-columns: 1fr;
+        gap: 25px;
+        min-height: auto;
+      }
+
+      .hero-content {
+        text-align: center;
+      }
+
+      .badge {
+        margin-bottom: 15px;
       }
 
       h1 {
-        font-size: 32px;
+        font-size: 42px;
+        letter-spacing: -1.5px;
+      }
+
+      .subtitle {
+        font-size: 16px;
+        margin: 0 auto 25px;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      #mainLoginBtn {
+        width: 100%;
+      }
+
+      .hero-visual {
+        min-height: 390px;
+      }
+
+      .visual-card {
+        width: min(330px,90vw);
+      }
+
+      .floating-one {
+        right: 0;
+      }
+
+      .floating-two {
+        left: 0;
+      }
+
+      .section-heading {
+        margin-top: 60px;
+      }
+
+      .section-heading h2 {
+        font-size: 27px;
       }
 
       .cards {
         grid-template-columns: 1fr;
       }
 
-      .header-right {
-        width: 100%;
-        justify-content: center;
-        flex-wrap: wrap;
+      .profile {
+        padding: 22px;
+      }
+
+      #matchingCards {
+        grid-template-columns: 1fr;
       }
     }
-  </style>
-</head>
 
-<body>
+    @media (max-width: 500px) {
 
-<header>
+      header {
+        align-items: flex-start;
+      }
 
-  <div class="logo">🎥 Video Meet</div>
+      .header-right {
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
 
-  <div class="header-right">
+      .logo {
+        min-width: 120px;
+      }
 
-    <select id="languageSelect">
-      <option value="uz">🇺🇿 O‘zbekcha</option>
-      <option value="en">🇬🇧 English</option>
-      <option value="ru">🇷🇺 Русский</option>
-      <option value="es">🇪🇸 Español</option>
-      <option value="ar">🇸🇦 العربية</option>
-      <option value="zh">🇨🇳 中文</option>
-      <option value="de">🇩🇪 Deutsch</option>
-      <option value="fr">🇫🇷 Français</option>
-    </select>
+      h1 {
+        font-size: 37px;
+      }
 
-    <button id="loginBtn">Google orqali kirish</button>
-    <button id="logoutBtn">Chiqish</button>
+      .hero-visual {
+        min-height: 350px;
+      }
 
+      .visual-card {
+        min-height: 350px;
+      }
+
+      .video-preview {
+        height: 220px;
+      }
+
+      .floating-card {
+        font-size: 11px;
+        padding: 10px 12px;
+      }
+    }
+  </style></head><body><header>  <div class="logo">
+    <div class="logo-mark">🎥</div>
+    <span>Video Meet</span>
+  </div>  <div class="header-right"><select id="languageSelect">
+  <option value="uz">🇺🇿 O‘zbekcha</option>
+  <option value="en">🇬🇧 English</option>
+  <option value="ru">🇷🇺 Русский</option>
+  <option value="es">🇪🇸 Español</option>
+  <option value="ar">🇸🇦 العربية</option>
+  <option value="zh">🇨🇳 中文</option>
+  <option value="de">🇩🇪 Deutsch</option>
+  <option value="fr">🇫🇷 Français</option>
+</select>
+
+<button id="loginBtn">
+  Google orqali kirish
+</button>
+
+<button id="logoutBtn">
+  Chiqish
+</button>
+
+  </div></header><main>  <section class="hero"><div class="hero-content">
+
+  <div class="badge">
+    ✨ Global video dating platform
   </div>
 
-</header>
-
-<main>
-
-  <h1 id="title">Odamlar bilan tanishing</h1>
+  <h1 id="title">
+    Odamlar bilan <span>haqiqiy</span> aloqa qiling
+  </h1>
 
   <p class="subtitle" id="subtitle">
-    Video suhbat boshlang va yangi odamlar bilan tanishing.
+    Video suhbat boshlang, yangi odamlar bilan tanishing
+    va butun dunyo bo‘ylab yangi aloqalar yarating.
   </p>
 
-  <button id="mainLoginBtn">Boshlash</button>
+  <div class="hero-actions">
 
-  <div class="profile" id="profileBox">
+    <button id="mainLoginBtn">
+      Boshlash
+    </button>
 
-    <img id="avatar" class="avatar" src="" alt="Avatar">
+  </div>
 
-    <h2 id="fullName">Foydalanuvchi</h2>
+  <p class="trust-text">
+    🔐 Google orqali xavfsiz kirish
+  </p>
 
-    <p id="email" class="email"></p>
+</div>
 
-    <div class="edit-box">
+<div class="hero-visual">
 
-      <label id="usernameLabel" for="username">
-        Foydalanuvchi nomi
-      </label>
+  <div class="floating-card floating-one">
+    🟢 Online now
+  </div>
 
-      <input
-        id="username"
-        type="text"
-        placeholder="Masalan: ali123"
+  <div class="visual-card">
+
+    <div class="video-preview">
+
+      <img
+        src="https://i.pravatar.cc/600?img=47"
+        alt="Video Meet"
       >
 
-      <label id="nameLabel" for="nameInput">
-        Ism
-      </label>
+      <div class="online-badge">
+        🟢 Online
+      </div>
 
-      <input
-        id="nameInput"
-        type="text"
-        placeholder="Ismingiz"
-      >
+    </div>
 
-      <label id="ageLabel" for="ageInput">
-        Yosh
-      </label>
+    <div class="preview-info">
 
-      <input
-        id="ageInput"
-        type="number"
-        min="18"
-        max="100"
-        placeholder="Masalan: 22"
-      >
+      <div>
+        <h3>Sarah</h3>
+        <p>✨ Ready to meet</p>
+      </div>
 
-      <label id="genderLabel" for="genderSelect">
-        Jins
-      </label>
-
-      <select id="genderSelect" class="gender-select">
-
-        <option value="">
-          Jinsni tanlang
-        </option>
-
-        <option value="male">
-          👨 Erkak
-        </option>
-
-        <option value="female">
-          👩 Ayol
-        </option>
-
-      </select>
-
-      <button id="saveBtn">
-        Profilni saqlash
-      </button>
-
-      <div id="status"></div>
+      <div class="heart">
+        ❤️
+      </div>
 
     </div>
 
   </div>
 
-  <div class="cards">
-
-    <div class="card">
-      <div style="font-size:40px;">👤</div>
-
-      <h3 id="profileTitle">
-        Profil
-      </h3>
-
-      <p id="profileText">
-        O‘z profilingizni yarating.
-      </p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:40px;">📹</div>
-
-      <h3 id="videoTitle">
-        Video Meet
-      </h3>
-
-      <p id="videoText">
-        Video suhbatlar qiling.
-      </p>
-    </div>
-
-    <div class="card">
-      <div style="font-size:40px;">💬</div>
-
-      <h3 id="chatTitle">
-        Chat
-      </h3>
-
-      <p id="chatText">
-        Yangi odamlar bilan yozishing.
-      </p>
-    </div>
-
+  <div class="floating-card floating-two">
+    ❤️ New match
   </div>
 
-</main>
+</div>
 
-<script type="module">
+  </section>  <div class="section-heading"><h2>
+  Video Meet bilan tanishing
+</h2>
+
+<p>
+  Yangi odamlar bilan tanishish uchun kerak bo‘lgan hamma narsa.
+</p>
+
+  </div>  <div class="cards"><div class="card">
+
+  <div class="card-icon">
+    👤
+  </div>
+
+  <h3 id="profileTitle">
+    Profil
+  </h3>
+
+  <p id="profileText">
+    O‘z profilingizni yarating va o‘zingiz haqingizda boshqalarga ma’lumot bering.
+  </p>
+
+</div>
+
+
+<div class="card">
+
+  <div class="card-icon">
+    📹
+  </div>
+
+  <h3 id="videoTitle">
+    Video Meet
+  </h3>
+
+  <p id="videoText">
+    Video suhbatlar orqali yangi odamlar bilan jonli muloqot qiling.
+  </p>
+
+</div>
+
+
+<div class="card">
+
+  <div class="card-icon">
+    💬
+  </div>
+
+  <h3 id="chatTitle">
+    Chat
+  </h3>
+
+  <p id="chatText">
+    Yangi tanishlaringiz bilan suhbatni davom ettiring.
+  </p>
+
+</div>
+
+  </div>  <div class="profile" id="profileBox"><div class="profile-top">
+
+  <img
+    id="avatar"
+    class="avatar"
+    src=""
+    alt="Avatar"
+  >
+
+  <h2 id="fullName">
+    Foydalanuvchi
+  </h2>
+
+  <p id="email" class="email"></p>
+
+</div>
+
+
+<div class="edit-box">
+
+  <label id="usernameLabel" for="username">
+    Foydalanuvchi nomi
+  </label>
+
+  <input
+    id="username"
+    type="text"
+    placeholder="Masalan: ali123"
+  >
+
+
+  <label id="nameLabel" for="nameInput">
+    Ism
+  </label>
+
+  <input
+    id="nameInput"
+    type="text"
+    placeholder="Ismingiz"
+  >
+
+
+  <label id="ageLabel" for="ageInput">
+    Yosh
+  </label>
+
+  <input
+    id="ageInput"
+    type="number"
+    min="18"
+    max="100"
+    placeholder="Masalan: 22"
+  >
+
+
+  <label id="genderLabel" for="genderSelect">
+    Jins
+  </label>
+
+  <select
+    id="genderSelect"
+    class="gender-select"
+  >
+
+    <option value="">
+      Jinsni tanlang
+    </option>
+
+    <option value="male">
+      👨 Erkak
+    </option>
+
+    <option value="female">
+      👩 Ayol
+    </option>
+
+  </select>
+
+
+  <button id="saveBtn">
+    Profilni saqlash
+  </button>
+
+  <div id="status"></div>
+
+</div>
+
+  </div>  <section
+    id="matchingSection"
+    style="display:none;"
+  ><h2 id="matchingTitle">
+  Sizga mos odamlar
+</h2>
+
+<div id="matchingCards"></div>
+
+  </section></main><footer>
+  © 2026 Video Meet · Connect. Meet. Talk.
+</footer><script type="module">
 
 import { createClient }
 from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -596,14 +1096,13 @@ function changeLanguage(language) {
   const t =
     translations[language] || translations.uz;
 
-
   document.documentElement.lang =
     language;
 
-
   document.documentElement.dir =
-    language === "ar" ? "rtl" : "ltr";
-
+    language === "ar"
+      ? "rtl"
+      : "ltr";
 
   document.getElementById("title").textContent =
     t.title;
@@ -662,10 +1161,8 @@ function changeLanguage(language) {
   document.getElementById("chatText").textContent =
     t.chatText;
 
-
   const genderSelect =
     document.getElementById("genderSelect");
-
 
   genderSelect.options[0].textContent =
     t.genderPlaceholder;
@@ -676,12 +1173,10 @@ function changeLanguage(language) {
   genderSelect.options[2].textContent =
     t.female;
 
-
   localStorage.setItem(
     "videoMeetLanguage",
     language
   );
-
 }
 
 
@@ -702,12 +1197,10 @@ changeLanguage(
 
 languageSelect.addEventListener(
   "change",
-  function () {
-
+  function() {
     changeLanguage(
       languageSelect.value
     );
-
   }
 );
 
@@ -751,6 +1244,7 @@ const saveBtn =
 const status =
   document.getElementById("status");
 
+
 async function login() {
 
   const result =
@@ -760,7 +1254,8 @@ async function login() {
 
       options: {
         redirectTo:
-          window.location.origin + "/dashboard.html"
+          window.location.origin +
+          "/dashboard.html"
       }
 
     });
@@ -772,9 +1267,7 @@ async function login() {
     );
 
   }
-
-  }
-
+}
 
 
 loginBtn.addEventListener(
@@ -794,10 +1287,8 @@ async function loadProfile() {
   const result =
     await supabase.auth.getUser();
 
-
   const user =
     result.data.user;
-
 
   if (!user) {
 
@@ -814,9 +1305,7 @@ async function loadProfile() {
       "none";
 
     return;
-
   }
-
 
   loginBtn.style.display =
     "none";
@@ -830,30 +1319,24 @@ async function loadProfile() {
   profileBox.style.display =
     "block";
 
-
   const googleName =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
     "Foydalanuvchi";
-
 
   const googleAvatar =
     user.user_metadata?.avatar_url ||
     user.user_metadata?.picture ||
     "";
 
-
   avatar.src =
     googleAvatar;
-
 
   fullName.textContent =
     googleName;
 
-
   email.textContent =
     user.email || "";
-
 
   const profileResult =
     await supabase
@@ -862,7 +1345,6 @@ async function loadProfile() {
       .eq("id", user.id)
       .maybeSingle();
 
-
   if (profileResult.error) {
 
     console.log(
@@ -870,13 +1352,10 @@ async function loadProfile() {
     );
 
     return;
-
   }
-
 
   const profile =
     profileResult.data;
-
 
   if (profile) {
 
@@ -908,56 +1387,46 @@ async function loadProfile() {
       "";
 
   }
-
 }
 
 
 saveBtn.addEventListener(
   "click",
-  async function () {
+  async function() {
 
     const result =
       await supabase.auth.getUser();
 
-
     const user =
       result.data.user;
-
 
     if (!user) {
       return;
     }
 
-
     const language =
       languageSelect.value;
 
-
     const t =
-      translations[language] || translations.uz;
-
+      translations[language] ||
+      translations.uz;
 
     status.textContent =
       t.saving;
 
-
     const newName =
       nameInput.value.trim();
 
-
     const newUsername =
       username.value.trim();
-
 
     const newAge =
       ageInput.value
         ? Number(ageInput.value)
         : null;
 
-
     const newGender =
       genderSelect.value;
-
 
     if (
       newAge !== null &&
@@ -965,14 +1434,10 @@ saveBtn.addEventListener(
     ) {
 
       status.textContent =
-        t.error +
-        "18–100";
-
+        t.error + "18–100";
 
       return;
-
     }
-
 
     if (
       newGender !== "male" &&
@@ -983,11 +1448,8 @@ saveBtn.addEventListener(
         t.error +
         t.genderPlaceholder;
 
-
       return;
-
     }
-
 
     if (!newUsername) {
 
@@ -995,11 +1457,8 @@ saveBtn.addEventListener(
         t.error +
         t.username;
 
-
       return;
-
     }
-
 
     const updateResult =
       await supabase
@@ -1024,23 +1483,18 @@ saveBtn.addEventListener(
           user.id
         );
 
-
     if (updateResult.error) {
 
       status.textContent =
         t.error +
         updateResult.error.message;
 
-
       return;
-
     }
-
 
     fullName.textContent =
       newName ||
       "Foydalanuvchi";
-
 
     status.textContent =
       t.saved;
@@ -1051,7 +1505,7 @@ saveBtn.addEventListener(
 
 logoutBtn.addEventListener(
   "click",
-  async function () {
+  async function() {
 
     await supabase.auth.signOut();
 
@@ -1062,110 +1516,172 @@ logoutBtn.addEventListener(
 
 
 supabase.auth.onAuthStateChange(
-  function () {
-
+  function() {
     loadProfile();
-
   }
 );
 
 
 loadProfile();
+
+
 async function loadMatchingProfiles() {
-
-  const result = await supabase
-    .rpc("get_matching_profiles");
-
-  if (result.error) {
-    console.error("Matching error:", result.error);
-    return;
-  }
-
-  const profiles = result.data || [];
-
-  const section =
-    document.getElementById("matchingSection");
-
-  const cards =
-    document.getElementById("matchingCards");
-
-  section.style.display = "block";
-
-  cards.innerHTML = "";
-
-  profiles.forEach(function(profile) {
-
-    const card = document.createElement("div");
-
-    card.style.background = "white";
-    card.style.padding = "25px";
-    card.style.borderRadius = "18px";
-    card.style.boxShadow = "0 4px 20px rgba(0,0,0,0.06)";
-
-    card.innerHTML = `
-      <img
-        src="${profile["avatar url"] || ""}"
-        style="width:90px;height:90px;border-radius:50%;object-fit:cover;"
-      >
-
-      <h3 style="margin:12px 0 6px;">
-        ${profile["full name"] || profile.username}
-      </h3>
-
-      <p style="color:#6b7280;">
-        @${profile.username}
-      </p>
-
-      <p style="margin-top:8px;">
-        🎂 ${profile.age || "-"}
-      </p>
-
-      <button
-        style="margin-top:15px;background:#2563eb;color:white;"
-        onclick="likeUser('${profile.id}')"
-      >
-        ❤️ Like
-      </button>
-
-      <button
-        style="margin-top:10px;background:#e5e7eb;color:#111827;"
-        onclick="this.parentElement.remove()"
-      >
-        ⏭️ Next
-      </button>
-    `;
-
-    cards.appendChild(card);
-
-  });
-
-}
-
-
-window.likeUser = async function(userId) {
 
   const result =
     await supabase
-      .from("likes")
-      .insert({
-        from_user: (await supabase.auth.getUser()).data.user.id,
-        to_user: userId
-      });
+      .rpc("get_matching_profiles");
 
   if (result.error) {
 
-    if (result.error.code === "23505") {
-      alert("Siz bu profilni allaqachon yoqtirgansiz.");
-    } else {
-      console.error(result.error);
-    }
+    console.error(
+      "Matching error:",
+      result.error
+    );
 
     return;
   }
 
-  alert("❤️ Like yuborildi!");
+  const profiles =
+    result.data || [];
 
-};
+  const section =
+    document.getElementById(
+      "matchingSection"
+    );
+
+  const cards =
+    document.getElementById(
+      "matchingCards"
+    );
+
+  section.style.display =
+    "block";
+
+  cards.innerHTML =
+    "";
+
+  profiles.forEach(
+    function(profile) {
+
+      const card =
+        document.createElement("div");
+
+      card.style.background =
+        "white";
+
+      card.style.padding =
+        "25px";
+
+      card.style.borderRadius =
+        "18px";
+
+      card.style.boxShadow =
+        "0 4px 20px rgba(0,0,0,0.06)";
+
+      card.innerHTML = `
+
+        <img
+          src="${profile["avatar url"] || ""}"
+          style="
+            width:90px;
+            height:90px;
+            border-radius:50%;
+            object-fit:cover;
+          "
+        >
+
+        <h3 style="margin:12px 0 6px;">
+          ${profile["full name"] || profile.username}
+        </h3>
+
+        <p style="color:#6b7280;">
+          @${profile.username}
+        </p>
+
+        <p style="margin-top:8px;">
+          🎂 ${profile.age || "-"}
+        </p>
+
+        <button
+          style="
+            margin-top:15px;
+            background:#2563eb;
+            color:white;
+          "
+          onclick="likeUser('${profile.id}')"
+        >
+          ❤️ Like
+        </button>
+
+        <button
+          style="
+            margin-top:10px;
+            background:#e5e7eb;
+            color:#111827;
+          "
+          onclick="this.parentElement.remove()"
+        >
+          ⏭️ Next
+        </button>
+      `;
+
+      cards.appendChild(card);
+
+    }
+  );
+}
+
+
+window.likeUser =
+  async function(userId) {
+
+    const currentUser =
+      (await supabase.auth.getUser())
+        .data.user;
+
+    if (!currentUser) {
+      return;
+    }
+
+    const result =
+      await supabase
+        .from("likes")
+        .insert({
+
+          from_user:
+            currentUser.id,
+
+          to_user:
+            userId
+
+        });
+
+    if (result.error) {
+
+      if (
+        result.error.code === "23505"
+      ) {
+
+        alert(
+          "Siz bu profilni allaqachon yoqtirgansiz."
+        );
+
+      } else {
+
+        console.error(
+          result.error
+        );
+
+      }
+
+      return;
+    }
+
+    alert(
+      "❤️ Like yuborildi!"
+    );
+
+  };
 
 
 supabase.auth.onAuthStateChange(
@@ -1177,13 +1693,9 @@ supabase.auth.onAuthStateChange(
 
   }
 );
-</script>
-<section id="matchingSection" style="display:none; margin-top:50px;">
-  <h2 id="matchingTitle">Sizga mos odamlar</h2>
 
-  <div id="matchingCards"
-       style="display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:25px;">
-  </div>
-</section>
-</body>
-  </html>
+</script>
+    </body>
+</html>
+    
+    
