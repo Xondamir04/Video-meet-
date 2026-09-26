@@ -197,8 +197,13 @@
 
     <select id="languageSelect">
       <option value="uz">🇺🇿 O‘zbekcha</option>
-      <option value="ru">🇷🇺 Русский</option>
       <option value="en">🇬🇧 English</option>
+      <option value="ru">🇷🇺 Русский</option>
+      <option value="es">🇪🇸 Español</option>
+      <option value="ar">🇸🇦 العربية</option>
+      <option value="zh">🇨🇳 中文</option>
+      <option value="de">🇩🇪 Deutsch</option>
+      <option value="fr">🇫🇷 Français</option>
     </select>
 
     <button id="loginBtn">Google orqali kirish</button>
@@ -207,7 +212,6 @@
   </div>
 
 </header>
-
 
 <main>
 
@@ -219,7 +223,6 @@
 
   <button id="mainLoginBtn">Boshlash</button>
 
-
   <div class="profile" id="profileBox">
 
     <img id="avatar" class="avatar" src="" alt="Avatar">
@@ -227,7 +230,6 @@
     <h2 id="fullName">Foydalanuvchi</h2>
 
     <p id="email" class="email"></p>
-
 
     <div class="edit-box">
 
@@ -241,7 +243,6 @@
         placeholder="Masalan: ali123"
       >
 
-
       <label id="nameLabel" for="nameInput">
         Ism
       </label>
@@ -251,7 +252,6 @@
         type="text"
         placeholder="Ismingiz"
       >
-
 
       <label id="ageLabel" for="ageInput">
         Yosh
@@ -264,7 +264,6 @@
         max="100"
         placeholder="Masalan: 22"
       >
-
 
       <label id="genderLabel" for="genderSelect">
         Jins
@@ -286,7 +285,6 @@
 
       </select>
 
-
       <button id="saveBtn">
         Profilni saqlash
       </button>
@@ -296,7 +294,6 @@
     </div>
 
   </div>
-
 
   <div class="cards">
 
@@ -312,7 +309,6 @@
       </p>
     </div>
 
-
     <div class="card">
       <div style="font-size:40px;">📹</div>
 
@@ -324,7 +320,6 @@
         Video suhbatlar qiling.
       </p>
     </div>
-
 
     <div class="card">
       <div style="font-size:40px;">💬</div>
@@ -341,7 +336,6 @@
   </div>
 
 </main>
-
 
 <script type="module">
 
@@ -394,6 +388,34 @@ const translations = {
     error: "Xatolik: "
   },
 
+  en: {
+    title: "Meet new people",
+    subtitle: "Start video conversations and meet new people.",
+    login: "Sign in with Google",
+    logout: "Sign out",
+    start: "Get started",
+    username: "Username",
+    usernamePlaceholder: "For example: ali123",
+    name: "Name",
+    namePlaceholder: "Your name",
+    age: "Age",
+    agePlaceholder: "For example: 22",
+    gender: "Gender",
+    genderPlaceholder: "Select gender",
+    male: "👨 Male",
+    female: "👩 Female",
+    save: "Save profile",
+    profile: "Profile",
+    profileText: "Create your profile.",
+    video: "Video Meet",
+    videoText: "Have video conversations.",
+    chat: "Chat",
+    chatText: "Chat with new people.",
+    saving: "Saving...",
+    saved: "✅ Profile saved!",
+    error: "Error: "
+  },
+
   ru: {
     title: "Знакомьтесь с людьми",
     subtitle: "Начинайте видеочаты и знакомьтесь с новыми людьми.",
@@ -422,32 +444,144 @@ const translations = {
     error: "Ошибка: "
   },
 
-  en: {
-    title: "Meet new people",
-    subtitle: "Start video conversations and meet new people.",
-    login: "Sign in with Google",
-    logout: "Sign out",
-    start: "Get started",
-    username: "Username",
-    usernamePlaceholder: "For example: ali123",
-    name: "Name",
-    namePlaceholder: "Your name",
-    age: "Age",
-    agePlaceholder: "For example: 22",
-    gender: "Gender",
-    genderPlaceholder: "Select gender",
-    male: "👨 Male",
-    female: "👩 Female",
-    save: "Save profile",
-    profile: "Profile",
-    profileText: "Create your profile.",
+  es: {
+    title: "Conoce gente nueva",
+    subtitle: "Inicia conversaciones por video y conoce gente nueva.",
+    login: "Iniciar sesión con Google",
+    logout: "Cerrar sesión",
+    start: "Comenzar",
+    username: "Nombre de usuario",
+    usernamePlaceholder: "Por ejemplo: ali123",
+    name: "Nombre",
+    namePlaceholder: "Tu nombre",
+    age: "Edad",
+    agePlaceholder: "Por ejemplo: 22",
+    gender: "Género",
+    genderPlaceholder: "Selecciona el género",
+    male: "👨 Hombre",
+    female: "👩 Mujer",
+    save: "Guardar perfil",
+    profile: "Perfil",
+    profileText: "Crea tu perfil.",
     video: "Video Meet",
-    videoText: "Have video conversations.",
+    videoText: "Ten conversaciones por video.",
     chat: "Chat",
-    chatText: "Chat with new people.",
-    saving: "Saving...",
-    saved: "✅ Profile saved!",
+    chatText: "Habla con gente nueva.",
+    saving: "Guardando...",
+    saved: "✅ ¡Perfil guardado!",
     error: "Error: "
+  },
+
+  ar: {
+    title: "تعرّف على أشخاص جدد",
+    subtitle: "ابدأ محادثات الفيديو وتعرّف على أشخاص جدد.",
+    login: "تسجيل الدخول باستخدام Google",
+    logout: "تسجيل الخروج",
+    start: "ابدأ",
+    username: "اسم المستخدم",
+    usernamePlaceholder: "مثال: ali123",
+    name: "الاسم",
+    namePlaceholder: "اسمك",
+    age: "العمر",
+    agePlaceholder: "مثال: 22",
+    gender: "الجنس",
+    genderPlaceholder: "اختر الجنس",
+    male: "👨 رجل",
+    female: "👩 امرأة",
+    save: "حفظ الملف الشخصي",
+    profile: "الملف الشخصي",
+    profileText: "أنشئ ملفك الشخصي.",
+    video: "Video Meet",
+    videoText: "أجرِ محادثات بالفيديو.",
+    chat: "الدردشة",
+    chatText: "تحدث مع أشخاص جدد.",
+    saving: "جارٍ الحفظ...",
+    saved: "✅ تم حفظ الملف الشخصي!",
+    error: "خطأ: "
+  },
+
+  zh: {
+    title: "认识新朋友",
+    subtitle: "开始视频聊天，认识新朋友。",
+    login: "使用 Google 登录",
+    logout: "退出登录",
+    start: "开始",
+    username: "用户名",
+    usernamePlaceholder: "例如：ali123",
+    name: "姓名",
+    namePlaceholder: "你的姓名",
+    age: "年龄",
+    agePlaceholder: "例如：22",
+    gender: "性别",
+    genderPlaceholder: "选择性别",
+    male: "👨 男",
+    female: "👩 女",
+    save: "保存个人资料",
+    profile: "个人资料",
+    profileText: "创建你的个人资料。",
+    video: "Video Meet",
+    videoText: "进行视频聊天。",
+    chat: "聊天",
+    chatText: "与新朋友聊天。",
+    saving: "正在保存...",
+    saved: "✅ 个人资料已保存！",
+    error: "错误："
+  },
+
+  de: {
+    title: "Lerne neue Menschen kennen",
+    subtitle: "Starte Videogespräche und lerne neue Menschen kennen.",
+    login: "Mit Google anmelden",
+    logout: "Abmelden",
+    start: "Loslegen",
+    username: "Benutzername",
+    usernamePlaceholder: "Zum Beispiel: ali123",
+    name: "Name",
+    namePlaceholder: "Dein Name",
+    age: "Alter",
+    agePlaceholder: "Zum Beispiel: 22",
+    gender: "Geschlecht",
+    genderPlaceholder: "Geschlecht auswählen",
+    male: "👨 Mann",
+    female: "👩 Frau",
+    save: "Profil speichern",
+    profile: "Profil",
+    profileText: "Erstelle dein Profil.",
+    video: "Video Meet",
+    videoText: "Führe Videogespräche.",
+    chat: "Chat",
+    chatText: "Chatte mit neuen Menschen.",
+    saving: "Wird gespeichert...",
+    saved: "✅ Profil gespeichert!",
+    error: "Fehler: "
+  },
+
+  fr: {
+    title: "Rencontrez de nouvelles personnes",
+    subtitle: "Commencez des conversations vidéo et rencontrez de nouvelles personnes.",
+    login: "Se connecter avec Google",
+    logout: "Se déconnecter",
+    start: "Commencer",
+    username: "Nom d'utilisateur",
+    usernamePlaceholder: "Par exemple : ali123",
+    name: "Nom",
+    namePlaceholder: "Votre nom",
+    age: "Âge",
+    agePlaceholder: "Par exemple : 22",
+    gender: "Genre",
+    genderPlaceholder: "Sélectionnez le genre",
+    male: "👨 Homme",
+    female: "👩 Femme",
+    save: "Enregistrer le profil",
+    profile: "Profil",
+    profileText: "Créez votre profil.",
+    video: "Video Meet",
+    videoText: "Ayez des conversations vidéo.",
+    chat: "Chat",
+    chatText: "Discutez avec de nouvelles personnes.",
+    saving: "Enregistrement...",
+    saved: "✅ Profil enregistré !",
+    error: "Erreur : "
   }
 
 };
@@ -460,11 +594,15 @@ const languageSelect =
 function changeLanguage(language) {
 
   const t =
-    translations[language];
+    translations[language] || translations.uz;
 
 
   document.documentElement.lang =
     language;
+
+
+  document.documentElement.dir =
+    language === "ar" ? "rtl" : "ltr";
 
 
   document.getElementById("title").textContent =
@@ -552,11 +690,13 @@ const savedLanguage =
 
 
 languageSelect.value =
-  savedLanguage;
+  translations[savedLanguage]
+    ? savedLanguage
+    : "uz";
 
 
 changeLanguage(
-  savedLanguage
+  languageSelect.value
 );
 
 
@@ -795,7 +935,7 @@ saveBtn.addEventListener(
 
 
     const t =
-      translations[language];
+      translations[language] || translations.uz;
 
 
     status.textContent =
@@ -842,7 +982,19 @@ saveBtn.addEventListener(
 
       status.textContent =
         t.error +
-        "Gender";
+        t.genderPlaceholder;
+
+
+      return;
+
+    }
+
+
+    if (!newUsername) {
+
+      status.textContent =
+        t.error +
+        t.username;
 
 
       return;
