@@ -762,7 +762,29 @@ async function login() {
       options: {
         redirectTo:
           window.location.origin + "/dashboard.html"
+      async function login() {
+
+  const result =
+    await supabase.auth.signInWithOAuth({
+
+      provider: "google",
+
+      options: {
+        redirectTo:
+          window.location.origin + "/dashboard.html"
       }
+
+    });
+
+  if (result.error) {
+
+    alert(
+      result.error.message
+    );
+
+  }
+
+}
 
     });
 
