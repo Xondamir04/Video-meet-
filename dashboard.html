@@ -229,6 +229,152 @@
       }
 
     }
+    .home-top-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.home-brand {
+  font-size: 22px;
+  font-weight: bold;
+}
+
+.home-stats {
+  display: flex;
+  gap: 10px;
+}
+
+.stat-box {
+  background: #f3f4f6;
+  padding: 10px 14px;
+  border-radius: 12px;
+  font-weight: bold;
+}
+
+.stories-section {
+  margin-bottom: 30px;
+}
+
+.section-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+.section-title h2 {
+  font-size: 20px;
+}
+
+.section-title span {
+  color: #6b7280;
+  font-size: 14px;
+}
+
+.stories-list {
+  display: flex;
+  gap: 18px;
+  overflow-x: auto;
+  padding: 5px 2px 12px;
+}
+
+.story-item {
+  min-width: 75px;
+  text-align: center;
+  font-size: 13px;
+}
+
+.story-avatar {
+  position: relative;
+  width: 68px;
+  height: 68px;
+  margin: auto auto 7px;
+  padding: 3px;
+  border-radius: 50%;
+  border: 3px solid #ec4899;
+}
+
+.story-avatar img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.your-story {
+  border-color: #d1d5db;
+}
+
+.story-plus {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #2563eb;
+  color: white;
+  border: 3px solid white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.home-section {
+  margin-bottom: 35px;
+}
+
+.home-section .matching-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+@media (max-width: 800px) {
+
+  .home-top-info {
+    margin-bottom: 20px;
+  }
+
+  .home-brand {
+    font-size: 18px;
+  }
+
+  .home-stats {
+    gap: 5px;
+  }
+
+  .stat-box {
+    padding: 8px 9px;
+    font-size: 13px;
+  }
+
+  .stories-list {
+    gap: 14px;
+  }
+
+  .story-avatar {
+    width: 64px;
+    height: 64px;
+  }
+
+  .home-section .matching-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .home-section .person-card {
+    padding: 12px;
+  }
+
+  .home-section .person-avatar {
+    width: 75px;
+    height: 75px;
+  }
+
+    }
   </style>
 </head>
 
