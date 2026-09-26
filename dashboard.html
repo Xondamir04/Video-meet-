@@ -374,7 +374,41 @@
     height: 75px;
   }
 
-    }
+    } 
+    .secondary-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.mobile-menu-btn {
+  display: none;
+}
+
+@media (max-width: 800px) {
+
+  .secondary-nav {
+    display: none;
+    position: fixed;
+    right: 10px;
+    bottom: 78px;
+    width: 220px;
+    background: white;
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+    z-index: 30;
+  }
+
+  .secondary-nav.open {
+    display: flex;
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+  }
   </style>
 </head>
 
@@ -1294,6 +1328,21 @@ document.querySelectorAll("[data-section]").forEach(item => {
     }
   });
 });
+  const mobileMenuBtn =
+  document.getElementById("mobileMenuBtn");
+
+const secondaryNav =
+  document.getElementById("secondaryNav");
+
+if (mobileMenuBtn && secondaryNav) {
+
+  mobileMenuBtn.addEventListener("click", function () {
+
+    secondaryNav.classList.toggle("open");
+
+  });
+
+}
 </script>
 
 </body>
