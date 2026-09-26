@@ -4,14 +4,183 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Video Meet</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background: #f5f7fb;
+      color: #111827;
+    }
+
+    .header {
+      height: 70px;
+      background: white;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 25px;
+    }
+
+    .logo {
+      font-size: 24px;
+      font-weight: 700;
+    }
+
+    .login {
+      background: #111827;
+      color: white;
+      border: 0;
+      padding: 12px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 60px 20px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 18px;
+    }
+
+    .hero p {
+      color: #6b7280;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+
+    .start {
+      background: #111827;
+      color: white;
+      border: 0;
+      padding: 15px 30px;
+      border-radius: 12px;
+      font-size: 17px;
+      cursor: pointer;
+    }
+
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-top: 40px;
+    }
+
+    .card {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: #6b7280;
+      line-height: 1.5;
+    }
+
+    #app {
+      display: none;
+    }
+
+    .profile {
+      background: white;
+      padding: 30px;
+      border-radius: 18px;
+      text-align: center;
+      max-width: 500px;
+      margin: 40px auto;
+    }
+
+    .profile img {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin-bottom: 15px;
+    }
+
+    .logout {
+      margin-top: 20px;
+      padding: 11px 20px;
+      border: 0;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 700px) {
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 36px;
+      }
+    }
+  </style>
 </head>
+
 <body>
 
-  <h1>Video Meet</h1>
+  <header class="header">
+    <div class="logo">🎥 Video Meet</div>
+    <button class="login" id="loginButton">Sign in with Google</button>
+  </header>
 
-  <button id="googleLogin">Sign in with Google</button>
+  <main id="home">
+    <section class="hero">
+      <h1>Video Meet</h1>
+      <p>Odamlar bilan tanishing va video suhbat boshlang.</p>
+      <button class="start" id="startButton">Boshlash</button>
+    </section>
 
-  <p id="status"></p>
+    <section class="container">
+      <div class="features">
+        <div class="card">
+          <h3>👤 Profil</h3>
+          <p>O‘z profilingizni yarating va ma’lumotlaringizni boshqaring.</p>
+        </div>
+
+        <div class="card">
+          <h3>📹 Video Meet</h3>
+          <p>Keyingi bosqichda video suhbat funksiyasini qo‘shamiz.</p>
+        </div>
+
+        <div class="card">
+          <h3>💬 Chat</h3>
+          <p>Suhbatlashish uchun chat tizimini keyinroq ulaymiz.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <main id="app">
+    <div class="profile">
+      <img id="avatar" src="" alt="Profile">
+      <h2 id="name"></h2>
+      <p id="email"></p>
+      <button class="logout" id="logoutButton">Chiqish</button>
+    </div>
+  </main>
 
   <script type="module">
     import { createClient } from "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm";
@@ -21,7 +190,11 @@
 
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    document.getElementById("googleLogin").addEventListener("click", async () => {
+    const loginButton = document.getElementById("loginButton");
+    const startButton = document.getElementById("startButton");
+    const logoutButton = document.getElementById("logoutButton");
+
+    async function login() {
       const { error } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
@@ -30,9 +203,46 @@
       });
 
       if (error) {
-        document.getElementById("status").textContent = error.message;
+        alert(error.message);
+      }
+    }
+
+    loginButton.addEventListener("click", login);
+    startButton.addEventListener("click", login);
+
+    async function showUser(user) {
+      if (!user) return;
+
+      document.getElementById("home").style.display = "none";
+      document.getElementById("app").style.display = "block";
+
+      document.getElementById("name").textContent =
+        user.user_metadata?.full_name || "Foydalanuvchi";
+
+      document.getElementById("email").textContent =
+        user.email || "";
+
+      document.getElementById("avatar").src =
+        user.user_metadata?.avatar_url || "";
+    }
+
+    async function checkUser() {
+      const { data } = await supabase.auth.getUser();
+      showUser(data.user);
+    }
+
+    logoutButton.addEventListener("click", async () => {
+      await supabase.auth.signOut();
+      location.reload();
+    });
+
+    supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        showUser(session.user);
       }
     });
+
+    checkUser();
   </script>
 
 </body>
