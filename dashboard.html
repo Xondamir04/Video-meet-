@@ -1744,6 +1744,35 @@ if (leaveVideoBtn) {
   );
 
   }
+const backFromVideoBtn =
+  document.getElementById("backFromVideoBtn");
+
+if (backFromVideoBtn) {
+
+  backFromVideoBtn.addEventListener(
+    "click",
+    function () {
+
+      document
+        .querySelectorAll("main > section")
+        .forEach(function(section) {
+          section.style.display = "none";
+        });
+
+      const homeSection =
+        document.querySelector(
+          'main > section:not(#videoSection)'
+        );
+
+      if (homeSection) {
+        homeSection.style.display = "block";
+      }
+
+    }
+  );
+
+  }
+  
 </script>
 
 </body>
