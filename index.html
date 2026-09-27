@@ -1536,27 +1536,35 @@ saveBtn.addEventListener(
 
       return;
     }
-
-    const updateResult =
+ const updateResult =
   await supabase
     .from("profiles")
-    .update({
+    .upsert({
+      id:
+        user.id,
+
       username:
         newUsername,
 
       "full name":
         newName,
 
+      "avatar url":
+        user.user_metadata?.avatar_url ||
+        user.user_metadata?.picture ||
+        "",
+
       age:
         newAge,
 
       gender:
-        newGender
-    })
-    .eq(
-      "id",
-      user.id
-    );
+        newGender,
+
+      "created at":
+        new Date().toISOString()
+    }, {
+      onConflict: "id"
+    });
 
     if (updateResult.error) {
 
