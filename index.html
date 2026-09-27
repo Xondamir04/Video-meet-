@@ -1767,16 +1767,16 @@ window.likeUser =
 
   };
 
-
 supabase.auth.onAuthStateChange(
   function(event, session) {
 
     if (session) {
-      loadMatchingProfiles();
+      window.location.href = "dashboard.html";
     }
 
   }
 );
+
 
 </script>
     </body>
