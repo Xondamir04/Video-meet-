@@ -712,7 +712,115 @@
     </div>
 
   </div>
+<!-- VIDEO CHAT -->
 
+<section
+  id="videoSection"
+  class="home-section"
+  style="display:none;"
+>
+
+  <div class="section-title">
+    <h2>📹 Video Chat</h2>
+  </div>
+
+  <div style="
+    background:#111827;
+    border-radius:20px;
+    padding:20px;
+    text-align:center;
+    color:white;
+  ">
+
+    <div style="
+      max-width:700px;
+      margin:auto;
+    ">
+
+      <div id="videoStatus" style="
+        padding:30px 10px;
+        font-size:18px;
+      ">
+        🔎 Partner qidirishga tayyor
+      </div>
+
+      <div style="
+        display:grid;
+        grid-template-columns:1fr 1fr;
+        gap:15px;
+      ">
+
+        <video
+          id="localVideo"
+          autoplay
+          muted
+          playsinline
+          style="
+            width:100%;
+            min-height:220px;
+            background:#000;
+            border-radius:16px;
+            object-fit:cover;
+          "
+        ></video>
+
+        <video
+          id="remoteVideo"
+          autoplay
+          playsinline
+          style="
+            width:100%;
+            min-height:220px;
+            background:#000;
+            border-radius:16px;
+            object-fit:cover;
+          "
+        ></video>
+
+      </div>
+
+      <div style="
+        display:flex;
+        justify-content:center;
+        gap:10px;
+        margin-top:20px;
+        flex-wrap:wrap;
+      ">
+
+        <button id="findPartnerBtn"
+          style="
+            background:#2563eb;
+            color:white;
+          "
+        >
+          🔎 Partner izlash
+        </button>
+
+        <button id="nextPartnerBtn"
+          style="
+            background:#7c3aed;
+            color:white;
+          "
+        >
+          🔄 Next
+        </button>
+
+        <button id="leaveVideoBtn"
+          style="
+            background:#ef4444;
+            color:white;
+          "
+        >
+          🚪 Leave
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
   <!-- PEOPLE FOR YOU -->
   <div class="home-section">
@@ -1349,7 +1457,281 @@ if (mobileMenuBtn && secondaryNav) {
   });
 
 }
+  // ================================
+// VIDEO CHAT
+// ================================
+
+const findPartnerBtn =
+  document.getElementById("findPartnerBtn");
+
+const nextPartnerBtn =
+  document.getElementById("nextPartnerBtn");
+
+const leaveVideoBtn =
+  document.getElementById("leaveVideoBtn");
+
+const videoStatus =
+  document.getElementById("videoStatus");
+
+const localVideo =
+  document.getElementById("localVideo");
+
+const remoteVideo =
+  document.getElementById("remoteVideo");
+
+let localStream = null;
+
+
+// Kamera va mikrofonni yoqish
+async function startCamera() {
+
+  try {
+
+    localStream =
+      await navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: true
+      });
+
+    localVideo.srcObject =
+      localStream;
+
+    videoStatus.textContent =
+      "🎥 Kamera va mikrofon tayyor.";
+
+  } catch (error) {
+
+    console.error(
+      "Camera error:",
+      error
+    );
+
+    videoStatus.textContent =
+      "❌ Kamera yoki mikrofon uchun ruxsat bering.";
+
+  }
+
+}
+
+
+// Partner qidirish
+async function findVideoPartner() {
+
+  const userResult =
+    await supabase.auth.getUser();
+
+  const currentUser =
+    userResult.data.user;
+
+  if (!currentUser) {
+    window.location.href = "/";
+    return;
+  }
+
+  videoStatus.textContent =
+    "🔎 Partner qidirilmoqda...";
+
+  // Avval o'zimizni queue'ga qo'shamiz
+  const joinResult =
+    await supabase
+      .from("video_queue")
+      .upsert({
+        user_id: currentUser.id,
+        status: "waiting"
+      }, {
+        onConflict: "user_id"
+      });
+
+  if (joinResult.error) {
+
+    console.error(
+      "Queue error:",
+      joinResult.error
+    );
+
+    videoStatus.textContent =
+      "❌ Partner qidirishda xatolik.";
+
+    return;
+  }
+
+
+  // Partner qidiramiz
+  const partnerResult =
+    await supabase.rpc(
+      "find_video_partner"
+    );
+
+  if (partnerResult.error) {
+
+    console.error(
+      "Partner error:",
+      partnerResult.error
+    );
+
+    videoStatus.textContent =
+      "❌ Partner topishda xatolik.";
+
+    return;
+  }
+
+
+  const partners =
+    partnerResult.data || [];
+
+
+  if (
+    partners.length === 0
+  ) {
+
+    videoStatus.textContent =
+      "⏳ Hozircha partner topilmadi. Kuting...";
+
+    return;
+  }
+
+
+  const partnerId =
+    partners[0].partner_id;
+
+
+  // O'zimizni waiting holatidan chiqaramiz
+  await supabase
+    .from("video_queue")
+    .update({
+      status: "matched"
+    })
+    .eq(
+      "user_id",
+      currentUser.id
+    );
+
+
+  // Topilgan partnerni ham matched qilamiz
+  await supabase
+    .from("video_queue")
+    .update({
+      status: "matched"
+    })
+    .eq(
+      "user_id",
+      partnerId
+    );
+
+
+  videoStatus.textContent =
+    "🟢 Partner topildi! Video ulanish tayyorlanmoqda...";
+
+}
+
+
+// Queue'dan chiqish
+async function leaveVideoQueue() {
+
+  const userResult =
+    await supabase.auth.getUser();
+
+  const currentUser =
+    userResult.data.user;
+
+  if (currentUser) {
+
+    await supabase
+      .from("video_queue")
+      .delete()
+      .eq(
+        "user_id",
+        currentUser.id
+      );
+
+  }
+
+
+  if (localStream) {
+
+    localStream
+      .getTracks()
+      .forEach(
+        track => track.stop()
+      );
+
+    localStream = null;
+
+  }
+
+
+  localVideo.srcObject =
+    null;
+
+  remoteVideo.srcObject =
+    null;
+
+  videoStatus.textContent =
+    "🚪 Video chatdan chiqildi.";
+
+}
+
+
+// Next partner
+async function nextVideoPartner() {
+
+  await leaveVideoQueue();
+
+  videoStatus.textContent =
+    "🔄 Yangi partner qidirilmoqda...";
+
+  await startCamera();
+
+  await findVideoPartner();
+
+}
+
+
+// Tugmalar
+if (findPartnerBtn) {
+
+  findPartnerBtn.addEventListener(
+    "click",
+    async function() {
+
+      await startCamera();
+
+      await findVideoPartner();
+
+    }
+  );
+
+}
+
+
+if (nextPartnerBtn) {
+
+  nextPartnerBtn.addEventListener(
+    "click",
+    async function() {
+
+      await nextVideoPartner();
+
+    }
+  );
+
+}
+
+
+if (leaveVideoBtn) {
+
+  leaveVideoBtn.addEventListener(
+    "click",
+    async function() {
+
+      await leaveVideoQueue();
+
+    }
+  );
+
+  }
 </script>
 
 </body>
         </html>
+
