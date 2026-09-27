@@ -147,7 +147,7 @@ async function loadProfile(user) {
 
   const profileResult = await supabase
     .from("profiles")
-    .select("username, full_name, avatar_url, age, gender")
+    .select('username, "full name", "avatar url", age, gender')
     .eq("id", user.id)
     .maybeSingle();
 
@@ -166,12 +166,15 @@ async function loadProfile(user) {
 
   setLoggedInUi();
 
+  const savedName = profile?.["full name"] || profile?.full_name || "";
+  const savedAvatar = profile?.["avatar url"] || profile?.avatar_url || "";
+
   if (username) username.value = profile?.username || "";
-  if (nameInput) nameInput.value = profile?.full_name || name;
+  if (nameInput) nameInput.value = savedName || name;
   if (ageInput) ageInput.value = profile?.age || "";
   if (genderSelect) genderSelect.value = profile?.gender || "";
-  if (avatarEl && profile?.avatar_url) avatarEl.src = profile.avatar_url;
-  if (fullName && profile?.full_name) fullName.textContent = profile.full_name;
+  if (avatarEl && savedAvatar) avatarEl.src = savedAvatar;
+  if (fullName && savedName) fullName.textContent = savedName;
 }
 
 async function saveProfile() {
@@ -209,8 +212,8 @@ async function saveProfile() {
     {
       id: user.id,
       username,
-      full_name: newName,
-      avatar_url: avatar,
+      "full name": newName,
+      "avatar url": avatar,
       age: newAge,
       gender: newGender
     },

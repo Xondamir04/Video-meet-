@@ -51,7 +51,7 @@ async function loadUser() {
 
   const profileResult = await supabase
     .from("profiles")
-    .select("username, full_name, avatar_url, age, gender")
+    .select('username, "full name", "avatar url", age, gender')
     .eq("id", user.id)
     .maybeSingle();
 
