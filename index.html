@@ -1392,7 +1392,10 @@ async function loadProfile() {
 
   profileBox.style.display =
     "block";
-
+profileBox.scrollIntoView({
+  behavior: "smooth",
+  block: "center"
+});
   const googleName =
     user.user_metadata?.full_name ||
     user.user_metadata?.name ||
