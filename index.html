@@ -1538,27 +1538,25 @@ saveBtn.addEventListener(
     }
 
     const updateResult =
-      await supabase
-        .from("profiles")
-        .update({
+  await supabase
+    .from("profiles")
+    .update({
+      username:
+        newUsername,
 
-          username:
-            newUsername,
+      "full name":
+        newName,
 
-          "full name":
-            newName,
+      age:
+        newAge,
 
-          age:
-            newAge,
-
-          gender:
-            newGender
-
-        })
-        .eq(
-          "id",
-          user.id
-        );
+      gender:
+        newGender
+    })
+    .eq(
+      "id",
+      user.id
+    );
 
     if (updateResult.error) {
 
