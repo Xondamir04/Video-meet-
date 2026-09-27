@@ -1768,11 +1768,38 @@ window.likeUser =
   };
 
 supabase.auth.onAuthStateChange(
-  function(event, session) {
+  async function(event, session) {
 
-    if (session) {
-      window.location.href = "dashboard.html";
+    if (!session) {
+      return;
     }
+
+    const profileResult =
+      await supabase
+        .from("profiles")
+        .select("age, gender")
+        .eq("id", session.user.id)
+        .maybeSingle();
+
+    if (profileResult.error) {
+      console.error(profileResult.error);
+      return;
+    }
+
+    const profile =
+      profileResult.data;
+
+    if (
+      !profile ||
+      !profile.age ||
+      !profile.gender
+    ) {
+      loadProfile();
+      return;
+    }
+
+    window.location.href =
+      "dashboard.html";
 
   }
 );
