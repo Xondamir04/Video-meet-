@@ -432,12 +432,14 @@
     ❤️ Matches
   </button>
 
-  <button 
-    type="button"
-    data-section="videoSection"
-    >
-    📹 Video
-  </button>
+  <button
+  type="button"
+  class="like-btn"
+  id="openVideoBtn"
+>
+  📹 Video
+</button>
+  
 
   <button type="button">
     💬 Chat
@@ -1800,7 +1802,37 @@ if (leaveVideoBtn) {
   );
 
   }
+const openVideoBtn =
+  document.getElementById("openVideoBtn");
 
+if (openVideoBtn) {
+
+  openVideoBtn.addEventListener(
+    "click",
+    function () {
+
+      document
+        .querySelectorAll(".home-section")
+        .forEach(function(section) {
+          section.style.display = "none";
+        });
+
+      const videoSection =
+        document.getElementById("videoSection");
+
+      if (videoSection) {
+        videoSection.style.display = "block";
+
+        videoSection.scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+      }
+
+    }
+  );
+
+  }
   
 </script>
 
