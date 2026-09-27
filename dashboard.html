@@ -1730,7 +1730,41 @@ if (nextPartnerBtn) {
   );
 
 }
+const backFromVideoBtn =
+  document.getElementById("backFromVideoBtn");
 
+if (backFromVideoBtn) {
+
+  backFromVideoBtn.addEventListener(
+    "click",
+    function () {
+
+      document.querySelectorAll(".home-section").forEach(
+        function(section) {
+          section.style.display = "none";
+        }
+      );
+
+      const videoSection =
+        document.getElementById("videoSection");
+
+      if (videoSection) {
+        videoSection.style.display = "none";
+      }
+
+      const firstHomeSection =
+        document.querySelector(
+          ".home-section:not(#videoSection)"
+        );
+
+      if (firstHomeSection) {
+        firstHomeSection.style.display = "block";
+      }
+
+    }
+  );
+
+  }
 
 if (leaveVideoBtn) {
 
@@ -1744,34 +1778,7 @@ if (leaveVideoBtn) {
   );
 
   }
-const backFromVideoBtn =
-  document.getElementById("backFromVideoBtn");
 
-if (backFromVideoBtn) {
-
-  backFromVideoBtn.addEventListener(
-    "click",
-    function () {
-
-      document
-        .querySelectorAll("main > section")
-        .forEach(function(section) {
-          section.style.display = "none";
-        });
-
-      const homeSection =
-        document.querySelector(
-          'main > section:not(#videoSection)'
-        );
-
-      if (homeSection) {
-        homeSection.style.display = "block";
-      }
-
-    }
-  );
-
-  }
   
 </script>
 
