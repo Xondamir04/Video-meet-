@@ -1739,11 +1739,33 @@ if (backFromVideoBtn) {
     "click",
     function () {
 
-      document.querySelectorAll(".home-section").forEach(
-        function(section) {
-          section.style.display = "none";
-        }
-      );
+      const videoSection =
+        document.getElementById("videoSection");
+
+      if (videoSection) {
+        videoSection.style.display = "none";
+      }
+
+      document
+        .querySelectorAll(".home-section")
+        .forEach(function(section) {
+
+          if (section.id !== "videoSection") {
+            section.style.display = "block";
+          }
+
+        });
+
+      window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+      });
+
+    }
+  );
+
+  }
+  );
 
       const videoSection =
         document.getElementById("videoSection");
