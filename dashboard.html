@@ -1068,24 +1068,6 @@ async function loadUser() {
   }
 
 
-  document.getElementById(
-    "userName"
-  ).textContent =
-    user.user_metadata?.full_name ||
-    user.user_metadata?.name ||
-    "User";
-
-  document.getElementById(
-    "userAvatar"
-  ).src =
-    user.user_metadata?.avatar_url ||
-    user.user_metadata?.picture ||
-    "";
-
-  return user;
-
-}
-
 
 async function loadMatchingProfiles() {
 
