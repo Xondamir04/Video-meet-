@@ -1328,7 +1328,6 @@ const saveBtn =
 const status =
   document.getElementById("status");
 
-
 async function login() {
 
   const result =
@@ -1343,29 +1342,18 @@ async function login() {
   if (result.error) {
     alert(result.error.message);
   }
-  }
-    
-
-  if (result.error) {
-
-    alert(
-      result.error.message
-    );
-
-  }
 }
-
 
 loginBtn.addEventListener(
   "click",
   login
 );
 
-
 mainLoginBtn.addEventListener(
   "click",
   login
 );
+
 
 
 async function loadProfile() {
