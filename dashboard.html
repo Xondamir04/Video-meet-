@@ -348,6 +348,16 @@ select, input {
   width: 100%;
 }
 
+#localVideo {
+  transform: scaleX(-1);
+  -webkit-transform: scaleX(-1);
+}
+
+#remoteVideo {
+  transform: none;
+  -webkit-transform: none;
+}
+
 @media (max-width: 800px) {
   .sidebar {
     width: 100%;
@@ -730,14 +740,14 @@ select, input {
                 autoplay
                 muted
                 playsinline
-                style="width:100%;min-height:220px;background:#000;border-radius:16px;object-fit:cover;"
+                style="width:100%;min-height:220px;background:#000;border-radius:16px;object-fit:cover;transform:scaleX(-1);-webkit-transform:scaleX(-1);"
               ></video>
 
               <video
                 id="remoteVideo"
                 autoplay
                 playsinline
-                style="width:100%;min-height:220px;background:#000;border-radius:16px;object-fit:cover;"
+                style="width:100%;min-height:220px;background:#000;border-radius:16px;object-fit:cover;transform:none;-webkit-transform:none;"
               ></video>
 
             </div>
