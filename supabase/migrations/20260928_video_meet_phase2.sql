@@ -106,7 +106,13 @@ BEGIN
   END IF;
 END $$;
 
--- 3. MATCHING & MUTUAL MATCHES RPCs
+-- 3. DROP EXISTING FUNCTIONS TO ALLOW RETURN TYPE RE-DEFINITION
+DROP FUNCTION IF EXISTS public.get_matching_profiles();
+DROP FUNCTION IF EXISTS public.get_mutual_matches();
+DROP FUNCTION IF EXISTS public.find_video_partner();
+DROP FUNCTION IF EXISTS public.cleanup_stale_video_queue();
+
+-- 4. MATCHING & MUTUAL MATCHES RPCs
 CREATE OR REPLACE FUNCTION public.get_matching_profiles()
 RETURNS TABLE (
   id uuid,
@@ -183,7 +189,7 @@ AS $$
   ORDER BY COALESCE(p.created_at, p."created at") DESC NULLS LAST;
 $$;
 
--- 4. VIDEO QUEUE CLEANUP & HARDENING
+-- 5. VIDEO QUEUE CLEANUP & HARDENING
 CREATE OR REPLACE FUNCTION public.cleanup_stale_video_queue()
 RETURNS void
 LANGUAGE plpgsql
@@ -295,7 +301,7 @@ BEGIN
 END;
 $$;
 
--- 5. RPC SECURITY & EXECUTE PERMISSIONS
+-- 6. RPC SECURITY & EXECUTE PERMISSIONS
 REVOKE ALL ON FUNCTION public.get_matching_profiles() FROM PUBLIC;
 REVOKE ALL ON FUNCTION public.get_matching_profiles() FROM anon;
 REVOKE ALL ON FUNCTION public.get_mutual_matches() FROM PUBLIC;
