@@ -2,7 +2,38 @@
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 1. PROFILES SECURITY HARDENING & PRIVILEGES
+-- 1. PROFILES SCHEMA COMPATIBILITY & SECURITY HARDENING
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS "full name" text;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS "avatar url" text;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS "created at" timestamptz DEFAULT now();
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS full_name text;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS avatar_url text;
+ALTER TABLE public.profiles ADD COLUMN IF NOT EXISTS created_at timestamptz DEFAULT now();
+
+UPDATE public.profiles
+SET "full name" = full_name
+WHERE "full name" IS NULL AND full_name IS NOT NULL;
+
+UPDATE public.profiles
+SET full_name = "full name"
+WHERE full_name IS NULL AND "full name" IS NOT NULL;
+
+UPDATE public.profiles
+SET "avatar url" = avatar_url
+WHERE "avatar url" IS NULL AND avatar_url IS NOT NULL;
+
+UPDATE public.profiles
+SET avatar_url = "avatar url"
+WHERE avatar_url IS NULL AND "avatar url" IS NOT NULL;
+
+UPDATE public.profiles
+SET "created at" = created_at
+WHERE "created at" IS NULL AND created_at IS NOT NULL;
+
+UPDATE public.profiles
+SET created_at = "created at"
+WHERE created_at IS NULL AND "created at" IS NOT NULL;
+
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
 
 REVOKE ALL ON TABLE public.profiles FROM PUBLIC;
