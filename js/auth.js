@@ -147,7 +147,7 @@ async function loadProfile(user) {
 
   const profileResult = await supabase
     .from("profiles")
-    .select('username, "full name", "avatar url", age, gender')
+    .select('username, "full name", full_name, "avatar url", avatar_url, age, gender')
     .eq("id", user.id)
     .maybeSingle();
 
@@ -166,8 +166,8 @@ async function loadProfile(user) {
 
   setLoggedInUi();
 
-  const savedName = profile?.["full name"] || profile?.full_name || "";
-  const savedAvatar = profile?.["avatar url"] || profile?.avatar_url || "";
+  const savedName = profile?.full_name || profile?.["full name"] || "";
+  const savedAvatar = profile?.avatar_url || profile?.["avatar url"] || "";
 
   if (username) username.value = profile?.username || "";
   if (nameInput) nameInput.value = savedName || name;
@@ -212,7 +212,9 @@ async function saveProfile() {
     {
       id: user.id,
       username,
+      full_name: newName,
       "full name": newName,
+      avatar_url: avatar,
       "avatar url": avatar,
       age: newAge,
       gender: newGender
