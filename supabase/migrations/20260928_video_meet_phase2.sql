@@ -2,8 +2,12 @@
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 
--- 1. PROFILES SECURITY HARDENING
+-- 1. PROFILES SECURITY HARDENING & PRIVILEGES
 ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+
+REVOKE ALL ON TABLE public.profiles FROM PUBLIC;
+REVOKE ALL ON TABLE public.profiles FROM anon;
+GRANT SELECT, INSERT, UPDATE ON TABLE public.profiles TO authenticated;
 
 DROP POLICY IF EXISTS profiles_select_authenticated ON public.profiles;
 DROP POLICY IF EXISTS profiles_select_own ON public.profiles;
@@ -82,7 +86,9 @@ CREATE POLICY messages_insert_own
     )
   );
 
-GRANT SELECT, INSERT ON public.messages TO authenticated;
+REVOKE ALL ON TABLE public.messages FROM PUBLIC;
+REVOKE ALL ON TABLE public.messages FROM anon;
+GRANT SELECT, INSERT ON TABLE public.messages TO authenticated;
 
 -- Realtime for messages
 DO $$
