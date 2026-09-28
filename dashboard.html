@@ -32,6 +32,7 @@ body {
   top: 0;
   bottom: 0;
   left: 0;
+  z-index: 20;
 }
 
 .logo {
@@ -55,11 +56,14 @@ body {
   text-align: left;
   font-size: 15px;
   cursor: pointer;
+  font-weight: 600;
+  transition: background 0.15s ease;
 }
 
 .nav button:hover,
 .nav button.active {
   background: #eef2ff;
+  color: #2563eb;
 }
 
 .main {
@@ -78,6 +82,7 @@ body {
   align-items: center;
   gap: 15px;
   margin-bottom: 25px;
+  border: 1px solid #e5e7eb;
 }
 
 .user-area {
@@ -98,6 +103,7 @@ body {
   border-radius: 20px;
   padding: 30px;
   min-height: 500px;
+  border: 1px solid #e5e7eb;
 }
 
 .content h1 {
@@ -121,6 +127,13 @@ body {
   border-radius: 18px;
   padding: 20px;
   text-align: center;
+  background: #ffffff;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.person-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.05);
 }
 
 .person-avatar {
@@ -132,100 +145,67 @@ body {
 }
 
 .person-card h3 {
-  margin-bottom: 7px;
+  margin-bottom: 4px;
+  font-size: 18px;
 }
 
 .person-card p {
   color: #6b7280;
-  margin-bottom: 15px;
+  margin-bottom: 12px;
+  font-size: 14px;
 }
 
 .actions {
   display: flex;
   gap: 8px;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .like-btn {
   background: #2563eb;
   color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.like-btn:disabled {
+  background: #93c5fd;
+  cursor: not-allowed;
 }
 
 .next-btn {
   background: #e5e7eb;
   color: #111827;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
 }
 
 .empty {
   text-align: center;
-  padding: 70px 20px;
+  padding: 60px 20px;
   color: #6b7280;
+  font-size: 15px;
 }
 
-select {
-  padding: 10px;
+select, input {
+  padding: 10px 14px;
   border: 1px solid #d1d5db;
   border-radius: 10px;
   background: white;
+  font-size: 14px;
 }
 
 .logout {
   background: #fee2e2 !important;
   color: #dc2626 !important;
   margin-top: auto;
-}
-
-@media (max-width: 800px) {
-  .sidebar {
-    width: 100%;
-    height: 70px;
-    top: auto;
-    bottom: 0;
-    left: 0;
-    padding: 8px;
-    border-right: none;
-    border-top: 1px solid #e5e7eb;
-    z-index: 10;
-  }
-
-  .logo {
-    display: none;
-  }
-
-  .nav {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 4px;
-    width: 100%;
-  }
-
-  .nav button {
-    width: 100%;
-    white-space: nowrap;
-    min-height: 52px;
-    padding: 15px 8px;
-    font-size: 15px;
-  }
-
-  .main {
-    margin-left: 0;
-    width: 100%;
-    padding: 15px;
-    padding-bottom: 90px;
-  }
-
-  .topbar {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .matching-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .content {
-    padding: 20px;
-  }
 }
 
 .home-top-info {
@@ -253,18 +233,18 @@ select {
 }
 
 .stories-section {
-  margin-bottom: 30px;
+  margin-bottom: 35px;
 }
 
 .section-title {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
+  margin-bottom: 18px;
 }
 
 .section-title h2 {
-  font-size: 20px;
+  font-size: 22px;
 }
 
 .section-title span {
@@ -327,52 +307,6 @@ select {
   margin-bottom: 35px;
 }
 
-.home-section .matching-grid {
-  grid-template-columns: repeat(3, 1fr);
-}
-
-@media (max-width: 800px) {
-  .home-top-info {
-    margin-bottom: 20px;
-  }
-
-  .home-brand {
-    font-size: 18px;
-  }
-
-  .home-stats {
-    gap: 5px;
-  }
-
-  .stat-box {
-    padding: 8px 9px;
-    font-size: 13px;
-  }
-
-  .stories-list {
-    gap: 14px;
-  }
-
-  .story-avatar {
-    width: 64px;
-    height: 64px;
-  }
-
-  .home-section .matching-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-  }
-
-  .home-section .person-card {
-    padding: 12px;
-  }
-
-  .home-section .person-avatar {
-    width: 75px;
-    height: 75px;
-  }
-}
-
 .secondary-nav {
   display: flex;
   flex-direction: column;
@@ -381,9 +315,95 @@ select {
 
 .mobile-menu-btn {
   display: none;
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.chat-wrapper {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 0;
+  min-height: 480px;
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
 }
 
 @media (max-width: 800px) {
+  .sidebar {
+    width: 100%;
+    height: 70px;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    padding: 8px;
+    border-right: none;
+    border-top: 1px solid #e5e7eb;
+  }
+
+  .logo {
+    display: none;
+  }
+
+  .nav {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 4px;
+    width: 100%;
+  }
+
+  .nav button {
+    width: 100%;
+    white-space: nowrap;
+    min-height: 52px;
+    padding: 12px 6px;
+    font-size: 13px;
+    text-align: center;
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+    padding: 15px;
+    padding-bottom: 90px;
+  }
+
+  .topbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .matching-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .content {
+    padding: 18px;
+  }
+
+  .chat-wrapper {
+    grid-template-columns: 1fr;
+  }
+
   .secondary-nav {
     display: none;
     position: fixed;
@@ -422,11 +442,11 @@ select {
 
     <nav class="nav">
 
-      <button type="button" class="active">
+      <button type="button" id="navHomeBtn" class="active">
         🏠 Home
       </button>
 
-      <button type="button">
+      <button type="button" id="navMatchesBtn">
         ❤️ Matches
       </button>
 
@@ -438,21 +458,21 @@ select {
         📹 Video
       </button>
 
-      <button type="button">
+      <button type="button" id="navChatBtn">
         💬 Chat
       </button>
 
       <div class="secondary-nav" id="secondaryNav">
 
-        <button type="button">
+        <button type="button" id="navStoriesBtn">
           📖 Stories
         </button>
 
-        <button type="button">
+        <button type="button" id="navVipBtn">
           💎 VIP
         </button>
 
-        <button type="button">
+        <button type="button" id="navSettingsBtn">
           ⚙️ Settings
         </button>
 
@@ -475,7 +495,7 @@ select {
     <div class="topbar">
 
       <div>
-        <strong>Welcome to Video Meet 👋</strong>
+        <strong id="welcomeText">Welcome to Video Meet 👋</strong>
       </div>
 
       <button
@@ -517,7 +537,7 @@ select {
     <section class="content">
 
       <!-- TOP INFO -->
-      <div class="home-top-info">
+      <div class="home-top-info" id="homeTopInfo">
 
         <div class="home-brand">
           🎥 <strong>Video Meet</strong>
@@ -537,108 +557,149 @@ select {
 
       </div>
 
-      <!-- STORIES -->
-      <div class="stories-section">
+      <!-- HOME SECTION (People for You & Stories) -->
+      <div id="homeSection">
 
-        <div class="section-title">
-          <h2>Stories</h2>
-          <span>See all</span>
+        <!-- STORIES -->
+        <div class="stories-section" id="storiesSection">
+
+          <div class="section-title">
+            <h2 id="storiesTitle">Stories</h2>
+            <span id="seeAllStories">See all</span>
+          </div>
+
+          <div class="stories-list">
+
+            <div class="story-item">
+              <div class="story-avatar your-story">
+                <img id="storyUserAvatar" src="" alt="Your Story">
+                <span class="story-plus">+</span>
+              </div>
+              <span id="storyYouText">You</span>
+            </div>
+
+          </div>
+
         </div>
 
-        <div class="stories-list">
+        <!-- PEOPLE FOR YOU -->
+        <div class="home-section">
 
-          <div class="story-item">
-            <div class="story-avatar your-story">
-              <img id="storyUserAvatar" src="" alt="Your Story">
-              <span class="story-plus">+</span>
-            </div>
-            <span>You</span>
+          <div class="section-title">
+            <h2 id="matchingTitle">✨ People for You</h2>
           </div>
 
-          <div class="story-item">
-            <div class="story-avatar">
-              <img src="https://i.pravatar.cc/150?img=47" alt="Sara">
-            </div>
-            <span>Sara</span>
-          </div>
+          <p class="subtitle" id="matchingSubtitle">
+            Sizga mos yangi odamlarni toping.
+          </p>
 
-          <div class="story-item">
-            <div class="story-avatar">
-              <img src="https://i.pravatar.cc/150?img=32" alt="Anna">
-            </div>
-            <span>Anna</span>
-          </div>
+          <div id="matchingGrid" class="matching-grid"></div>
 
-          <div class="story-item">
-            <div class="story-avatar">
-              <img src="https://i.pravatar.cc/150?img=44" alt="Maria">
-            </div>
-            <span>Maria</span>
-          </div>
-
-          <div class="story-item">
-            <div class="story-avatar">
-              <img src="https://i.pravatar.cc/150?img=49" alt="Lisa">
-            </div>
-            <span>Lisa</span>
+          <div id="emptyMessage" class="empty" style="display:none;">
+            Hozircha sizga mos odamlar topilmadi.
           </div>
 
         </div>
 
       </div>
 
-      <!-- ONLINE NOW -->
-      <div class="home-section">
+      <!-- YOUR MUTUAL MATCHES SECTION -->
+      <div id="matchesSection" style="display:none;" class="home-section">
 
         <div class="section-title">
-          <h2>🟢 Online Now</h2>
+          <h2 id="mutualMatchesTitle">❤️ Your Mutual Matches</h2>
         </div>
 
-        <div class="matching-grid">
+        <div id="mutualMatchesGrid" class="matching-grid"></div>
 
-          <div class="person-card">
-            <img class="person-avatar" src="https://i.pravatar.cc/200?img=47" alt="Sarah">
-            <h3>Sarah</h3>
-            <p>🟢 Online</p>
-            <div class="actions">
-              <button class="like-btn">❤️ Like</button>
-            </div>
-          </div>
-
-          <div class="person-card">
-            <img class="person-avatar" src="https://i.pravatar.cc/200?img=32" alt="Anna">
-            <h3>Anna</h3>
-            <p>🟢 Online</p>
-            <div class="actions">
-              <button class="like-btn">❤️ Like</button>
-            </div>
-          </div>
-
+        <div id="emptyMatchesMessage" class="empty" style="display:none;">
+          Hozircha sizda o‘zaro mosliklar yo‘q.
         </div>
 
       </div>
 
-      <!-- YOUR MATCHES -->
-      <div class="home-section">
+      <!-- CHAT SECTION -->
+      <section id="chatSection" class="home-section" style="display:none;">
 
         <div class="section-title">
-          <h2>❤️ Your Matches</h2>
+          <h2 id="chatTitle">💬 Chat</h2>
         </div>
 
-        <div class="matching-grid">
+        <div class="chat-wrapper">
 
-          <div class="person-card">
-            <img class="person-avatar" src="https://i.pravatar.cc/200?img=44" alt="Maria">
-            <h3>Maria</h3>
-            <p>💚 Matched</p>
-            <div class="actions">
-              <button class="like-btn" data-section="videoSection">📹 Video</button>
+          <div style="border-right:1px solid #e5e7eb;padding:15px;background:#fafafa;" class="chat-sidebar">
+            <h3 style="font-size:15px;margin-bottom:12px;color:#374151;" id="chatMatchesHeading">Mutual Matches</h3>
+            <div id="chatUserList"></div>
+            <div id="noChatMatches" style="font-size:13px;color:#9ca3af;padding:20px 0;text-align:center;display:none;">
+              Hozircha mosliklar topilmadi.
             </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;height:100%;min-height:480px;" class="chat-main">
+            <div id="chatHeader" style="padding:15px;border-bottom:1px solid #e5e7eb;background:white;min-height:60px;display:flex;align-items:center;">
+              <span style="color:#9ca3af;" id="chatSelectPrompt">Suhbatlashish uchun mos kelgan insonni tanlang</span>
+            </div>
+
+            <div id="chatMessages" style="flex:1;padding:15px;overflow-y:auto;max-height:360px;background:#ffffff;"></div>
+
+            <form id="chatForm" style="display:none;padding:12px 15px;border-top:1px solid #e5e7eb;gap:10px;align-items:center;background:#fafafa;">
+              <input id="chatInput" type="text" maxlength="2000" placeholder="Xabar yozing..." style="flex:1;padding:10px 14px;border:1px solid #d1d5db;border-radius:12px;outline:none;" />
+              <button id="sendChatBtn" type="submit" style="background:#2563eb;color:white;padding:10px 18px;border-radius:12px;font-weight:bold;border:none;cursor:pointer;">Send</button>
+            </form>
           </div>
 
         </div>
 
-      </div>
+      </section>
+
+      <!-- PROFILE SETTINGS SECTION -->
+      <section id="settingsSection" class="home-section" style="display:none;">
+
+        <div class="section-title">
+          <h2 id="settingsTitle">⚙️ Profile Settings</h2>
+        </div>
+
+        <div style="max-width:500px;margin:auto;background:#ffffff;padding:25px;border-radius:18px;border:1px solid #e5e7eb;">
+
+          <div class="form-group">
+            <label id="settingsUsernameLabel" for="settingUsername">Username</label>
+            <input id="settingUsername" type="text" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" />
+            <small style="color:#6b7280;" id="settingsUsernameHint">3-24 belgi: harf, raqam yoki _</small>
+          </div>
+
+          <div class="form-group">
+            <label id="settingsFullNameLabel" for="settingFullName">Full Name</label>
+            <input id="settingFullName" type="text" />
+          </div>
+
+          <div class="form-group">
+            <label id="settingsAgeLabel" for="settingAge">Age</label>
+            <input id="settingAge" type="number" min="18" max="100" />
+          </div>
+
+          <div class="form-group">
+            <label id="settingsGenderLabel" for="settingGender">Gender</label>
+            <select id="settingGender">
+              <option value="">Select gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label id="settingsAvatarLabel" for="settingAvatar">Avatar URL</label>
+            <input id="settingAvatar" type="url" placeholder="https://..." />
+          </div>
+
+          <button id="saveSettingsBtn" type="button" style="width:100%;background:#2563eb;color:white;padding:12px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;">
+            Save Settings
+          </button>
+
+          <div id="settingsStatus" style="margin-top:12px;text-align:center;font-weight:bold;"></div>
+
+        </div>
+
+      </section>
 
       <!-- VIDEO CHAT -->
       <section id="videoSection" class="home-section" style="display:none;">
@@ -647,7 +708,7 @@ select {
           <button
             type="button"
             id="backFromVideoBtn"
-            style="background:#e5e7eb;color:#111827;margin-bottom:15px;"
+            style="background:#e5e7eb;color:#111827;padding:8px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:bold;"
           >
             ⬅️ back
           </button>
@@ -682,9 +743,9 @@ select {
             </div>
 
             <div style="display:flex;justify-content:center;gap:10px;margin-top:20px;flex-wrap:wrap;">
-              <button id="findPartnerBtn" style="background:#2563eb;color:white;">🔎 Partner izlash</button>
-              <button id="nextPartnerBtn" style="background:#7c3aed;color:white;">🔄 Next</button>
-              <button id="leaveVideoBtn" style="background:#ef4444;color:white;">🚪 Leave</button>
+              <button id="findPartnerBtn" style="background:#2563eb;color:white;padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:bold;">🔎 Partner izlash</button>
+              <button id="nextPartnerBtn" style="background:#7c3aed;color:white;padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:bold;">🔄 Next</button>
+              <button id="leaveVideoBtn" style="background:#ef4444;color:white;padding:10px 18px;border-radius:12px;border:none;cursor:pointer;font-weight:bold;">🚪 Leave</button>
             </div>
 
           </div>
@@ -692,25 +753,6 @@ select {
         </div>
 
       </section>
-
-      <!-- PEOPLE FOR YOU -->
-      <div class="home-section">
-
-        <div class="section-title">
-          <h2 id="matchingTitle">✨ People for You</h2>
-        </div>
-
-        <p class="subtitle" id="matchingSubtitle">
-          Sizga mos yangi odamlarni toping.
-        </p>
-
-        <div id="matchingGrid" class="matching-grid"></div>
-
-        <div id="emptyMessage" class="empty" style="display:none;">
-          Hozircha sizga mos odamlar topilmadi.
-        </div>
-
-      </div>
 
     </section>
 
