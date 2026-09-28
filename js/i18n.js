@@ -258,7 +258,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "Vaqt",
     settings: "Sozlamalar",
-    logout: "Chiqish"
+    logout: "Chiqish",
+    yourMatches: "Sizning mosliklaringiz",
+    noMutualMatches: "Hozircha o‘zaro mosliklar yo‘q.",
+    conversations: "Suhbatlar",
+    typeMessage: "Xabar yozing...",
+    send: "Yuborish"
   },
   en: {
     welcome: "Welcome to Video Meet",
@@ -276,7 +281,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "Time",
     settings: "Settings",
-    logout: "Logout"
+    logout: "Logout",
+    yourMatches: "Your Matches",
+    noMutualMatches: "No mutual matches yet.",
+    conversations: "Conversations",
+    typeMessage: "Type a message...",
+    send: "Send"
   },
   ru: {
     welcome: "Добро пожаловать в Video Meet",
@@ -294,7 +304,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "Время",
     settings: "Настройки",
-    logout: "Выйти"
+    logout: "Выйти",
+    yourMatches: "Ваши совпадения",
+    noMutualMatches: "Пока нет взаимных совпадений.",
+    conversations: "Диалоги",
+    typeMessage: "Введите сообщение...",
+    send: "Отправить"
   },
   es: {
     welcome: "Bienvenido a Video Meet",
@@ -312,7 +327,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "Tiempo",
     settings: "Configuración",
-    logout: "Salir"
+    logout: "Salir",
+    yourMatches: "Tus Matches",
+    noMutualMatches: "Aún no hay coincidencias mutuas.",
+    conversations: "Conversaciones",
+    typeMessage: "Escribe un mensaje...",
+    send: "Enviar"
   },
   ar: {
     welcome: "مرحبًا بك في Video Meet",
@@ -330,7 +350,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "الوقت",
     settings: "الإعدادات",
-    logout: "تسجيل الخروج"
+    logout: "تسجيل الخروج",
+    yourMatches: "تطابقاتك",
+    noMutualMatches: "لا توجد تطابقات متبادلة بعد.",
+    conversations: "المحادثات",
+    typeMessage: "اكتب رسالة...",
+    send: "إرسال"
   },
   zh: {
     welcome: "欢迎来到 Video Meet",
@@ -348,7 +373,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "时间",
     settings: "设置",
-    logout: "退出"
+    logout: "退出",
+    yourMatches: "你的匹配",
+    noMutualMatches: "暂无相互匹配。",
+    conversations: "对话",
+    typeMessage: "输入消息...",
+    send: "发送"
   },
   de: {
     welcome: "Willkommen bei Video Meet",
@@ -366,7 +396,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "Zeit",
     settings: "Einstellungen",
-    logout: "Abmelden"
+    logout: "Abmelden",
+    yourMatches: "Deine Matches",
+    noMutualMatches: "Noch keine gegenseitigen Matches.",
+    conversations: "Unterhaltungen",
+    typeMessage: "Nachricht schreiben...",
+    send: "Senden"
   },
   fr: {
     welcome: "Bienvenue sur Video Meet",
@@ -384,7 +419,12 @@ export const dashboardTranslations = {
     vip: "VIP",
     time: "Temps",
     settings: "Paramètres",
-    logout: "Déconnexion"
+    logout: "Déconnexion",
+    yourMatches: "Vos Matchs",
+    noMutualMatches: "Pas encore de matchs mutuels.",
+    conversations: "Conversations",
+    typeMessage: "Écrivez un message...",
+    send: "Envoyer"
   }
 };
 

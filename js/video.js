@@ -24,9 +24,12 @@ export function initVideoChat() {
   let signalingChannel = null;
   let queueChannel = null;
   let waitingRetryTimer = null;
+  let heartbeatTimer = null;
+  let connectionTimeoutTimer = null;
   let currentSessionId = null;
   let isCaller = false;
   let leaving = false;
+  let isHandshakeComplete = false;
 
   async function startCamera() {
     if (localStream) return true;
@@ -50,11 +53,30 @@ export function initVideoChat() {
     localVideo.srcObject = null;
   }
 
-  function clearWaitingRetry() {
+  function clearTimers() {
     if (waitingRetryTimer) {
       clearInterval(waitingRetryTimer);
       waitingRetryTimer = null;
     }
+    if (heartbeatTimer) {
+      clearInterval(heartbeatTimer);
+      heartbeatTimer = null;
+    }
+    if (connectionTimeoutTimer) {
+      clearTimeout(connectionTimeoutTimer);
+      connectionTimeoutTimer = null;
+    }
+  }
+
+  function startHeartbeat() {
+    if (heartbeatTimer) clearInterval(heartbeatTimer);
+    heartbeatTimer = setInterval(async () => {
+      try {
+        await supabase.rpc("touch_video_queue");
+      } catch (err) {
+        console.error("Heartbeat error:", err);
+      }
+    }, 10000);
   }
 
   function unsubscribeQueueChannel() {
@@ -83,12 +105,13 @@ export function initVideoChat() {
   }
 
   function resetCallState() {
-    clearWaitingRetry();
+    clearTimers();
     unsubscribeQueueChannel();
     unsubscribeSignalingChannel();
     closePeerConnection();
     currentSessionId = null;
     isCaller = false;
+    isHandshakeComplete = false;
   }
 
   function createPeerConnection() {
@@ -101,6 +124,10 @@ export function initVideoChat() {
     pc.ontrack = (event) => {
       remoteVideo.srcObject = event.streams[0];
       videoStatus.textContent = "Connected.";
+      if (connectionTimeoutTimer) {
+        clearTimeout(connectionTimeoutTimer);
+        connectionTimeoutTimer = null;
+      }
     };
 
     pc.onicecandidate = (event) => {
@@ -114,23 +141,54 @@ export function initVideoChat() {
     };
 
     pc.onconnectionstatechange = () => {
-      if (["disconnected", "failed", "closed"].includes(pc.connectionState)) {
-        videoStatus.textContent = "Connection lost.";
+      if (pc.connectionState === "connected") {
+        videoStatus.textContent = "Connected.";
+        if (connectionTimeoutTimer) {
+          clearTimeout(connectionTimeoutTimer);
+          connectionTimeoutTimer = null;
+        }
+      } else if (["disconnected", "failed", "closed"].includes(pc.connectionState)) {
+        videoStatus.textContent = "Connection lost. Reconnecting...";
       }
     };
 
     return pc;
   }
 
+  async function sendOffer() {
+    if (!peerConnection || !signalingChannel) return;
+    try {
+      const offer = await peerConnection.createOffer();
+      await peerConnection.setLocalDescription(offer);
+      signalingChannel.send({
+        type: "broadcast",
+        event: "signal",
+        payload: { kind: "offer", sdp: offer }
+      });
+    } catch (err) {
+      console.error("Offer creation error:", err);
+    }
+  }
+
   async function startSignaling(sessionId, partnerId, asCaller) {
     currentSessionId = sessionId;
     isCaller = asCaller;
-    videoStatus.textContent = "Partner found. Connecting...";
+    isHandshakeComplete = false;
+    videoStatus.textContent = "Partner found. Performing handshake...";
 
     const cameraReady = await startCamera();
     if (!cameraReady) return;
 
     peerConnection = createPeerConnection();
+    startHeartbeat();
+
+    // 15s connection timeout
+    connectionTimeoutTimer = setTimeout(async () => {
+      if (!peerConnection || peerConnection.connectionState !== "connected") {
+        videoStatus.textContent = "Connection timed out. Retrying...";
+        await nextVideoPartner();
+      }
+    }, 15000);
 
     signalingChannel = supabase.channel("video-" + sessionId, {
       config: { broadcast: { self: false } }
@@ -139,7 +197,26 @@ export function initVideoChat() {
     signalingChannel.on("broadcast", { event: "signal" }, async ({ payload }) => {
       if (!peerConnection || !payload) return;
 
-      if (payload.kind === "offer") {
+      if (payload.kind === "ready") {
+        // Partner is ready, acknowledge
+        signalingChannel.send({
+          type: "broadcast",
+          event: "signal",
+          payload: { kind: "ack" }
+        });
+        if (isCaller && !isHandshakeComplete) {
+          isHandshakeComplete = true;
+          videoStatus.textContent = "Connecting video...";
+          await sendOffer();
+        }
+      } else if (payload.kind === "ack") {
+        // Handshake acknowledged
+        isHandshakeComplete = true;
+        videoStatus.textContent = "Connecting video...";
+        if (isCaller) {
+          await sendOffer();
+        }
+      } else if (payload.kind === "offer") {
         await peerConnection.setRemoteDescription(new RTCSessionDescription(payload.sdp));
         const answer = await peerConnection.createAnswer();
         await peerConnection.setLocalDescription(answer);
@@ -165,13 +242,12 @@ export function initVideoChat() {
     });
 
     signalingChannel.subscribe(async (status) => {
-      if (status === "SUBSCRIBED" && isCaller && peerConnection) {
-        const offer = await peerConnection.createOffer();
-        await peerConnection.setLocalDescription(offer);
+      if (status === "SUBSCRIBED" && signalingChannel) {
+        // Send ready handshake
         signalingChannel.send({
           type: "broadcast",
           event: "signal",
-          payload: { kind: "offer", sdp: offer }
+          payload: { kind: "ready" }
         });
       }
     });
@@ -186,7 +262,7 @@ export function initVideoChat() {
         (payload) => {
           const row = payload.new;
           if (row.status === "matched" && row.session_id) {
-            clearWaitingRetry();
+            clearTimers();
             unsubscribeQueueChannel();
             startSignaling(row.session_id, row.partner_id, false);
           }
@@ -207,10 +283,20 @@ export function initVideoChat() {
     const cameraReady = await startCamera();
     if (!cameraReady) return;
 
-    videoStatus.textContent = "Looking for a partner...";
+    videoStatus.textContent = "Cleaning up stale queue & searching...";
+
+    // Run secure cleanup RPC for stale waiting/matched entries
+    try {
+      await supabase.rpc("cleanup_video_queue", {
+        p_waiting_timeout_seconds: 30,
+        p_matched_timeout_seconds: 60
+      });
+    } catch (err) {
+      console.error("Cleanup queue error:", err);
+    }
 
     const joinResult = await supabase.from("video_queue").upsert(
-      { user_id: currentUser.id, status: "waiting", session_id: null, partner_id: null },
+      { user_id: currentUser.id, status: "waiting", session_id: null, partner_id: null, updated_at: new Date().toISOString() },
       { onConflict: "user_id" }
     );
 
@@ -220,9 +306,13 @@ export function initVideoChat() {
       return;
     }
 
+    startHeartbeat();
     listenForMatch(currentUser.id);
 
     async function tryMatch() {
+      // Touch heartbeat
+      await supabase.rpc("touch_video_queue").catch(() => {});
+
       const partnerResult = await supabase.rpc("find_video_partner");
 
       if (partnerResult.error) {
@@ -233,7 +323,7 @@ export function initVideoChat() {
       const partners = partnerResult.data || [];
 
       if (partners.length > 0) {
-        clearWaitingRetry();
+        clearTimers();
         unsubscribeQueueChannel();
         startSignaling(partners[0].session_id, partners[0].partner_id, true);
       } else {
@@ -288,7 +378,9 @@ export function initVideoChat() {
     const videoSection = document.getElementById("videoSection");
     if (videoSection) videoSection.style.display = "none";
     document.querySelectorAll(".home-section").forEach((section) => {
-      if (section.id !== "videoSection") section.style.display = "block";
+      if (section.id !== "videoSection" && section.id !== "settingsSection" && section.id !== "chatSection") {
+        section.style.display = "block";
+      }
     });
     window.scrollTo({ top: 0, behavior: "smooth" });
   });

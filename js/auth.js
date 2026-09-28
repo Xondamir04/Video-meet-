@@ -208,12 +208,17 @@ async function saveProfile() {
     return;
   }
 
+  const customAvatar = document.getElementById("avatarUrlInput")?.value.trim();
+  const finalAvatar = customAvatar || avatar;
+
   const updateResult = await supabase.from("profiles").upsert(
     {
       id: user.id,
       username,
       "full name": newName,
-      "avatar url": avatar,
+      full_name: newName,
+      "avatar url": finalAvatar,
+      avatar_url: finalAvatar,
       age: newAge,
       gender: newGender
     },

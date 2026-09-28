@@ -422,11 +422,11 @@ select {
 
     <nav class="nav">
 
-      <button type="button" class="active">
+      <button type="button" class="active" id="navHomeBtn">
         🏠 Home
       </button>
 
-      <button type="button">
+      <button type="button" id="navMatchesBtn">
         ❤️ Matches
       </button>
 
@@ -438,7 +438,7 @@ select {
         📹 Video
       </button>
 
-      <button type="button">
+      <button type="button" id="navChatBtn">
         💬 Chat
       </button>
 
@@ -452,7 +452,7 @@ select {
           💎 VIP
         </button>
 
-        <button type="button">
+        <button type="button" id="openSettingsBtn">
           ⚙️ Settings
         </button>
 
@@ -587,58 +587,134 @@ select {
 
       </div>
 
-      <!-- ONLINE NOW -->
-      <div class="home-section">
+      <!-- YOUR MUTUAL MATCHES -->
+      <div class="home-section" id="matchesSection">
 
         <div class="section-title">
-          <h2>🟢 Online Now</h2>
+          <h2 id="matchesTitle">❤️ Your Matches</h2>
         </div>
 
-        <div class="matching-grid">
+        <div id="mutualMatchesGrid" class="matching-grid"></div>
 
-          <div class="person-card">
-            <img class="person-avatar" src="https://i.pravatar.cc/200?img=47" alt="Sarah">
-            <h3>Sarah</h3>
-            <p>🟢 Online</p>
-            <div class="actions">
-              <button class="like-btn">❤️ Like</button>
-            </div>
-          </div>
-
-          <div class="person-card">
-            <img class="person-avatar" src="https://i.pravatar.cc/200?img=32" alt="Anna">
-            <h3>Anna</h3>
-            <p>🟢 Online</p>
-            <div class="actions">
-              <button class="like-btn">❤️ Like</button>
-            </div>
-          </div>
-
+        <div id="noMutualMatchesMsg" class="empty" style="display:none;">
+          No mutual matches yet. Keep discovering new people!
         </div>
 
       </div>
 
-      <!-- YOUR MATCHES -->
-      <div class="home-section">
-
+      <!-- CHAT SECTION -->
+      <section id="chatSection" class="home-section" style="display:none;">
         <div class="section-title">
-          <h2>❤️ Your Matches</h2>
+          <button
+            type="button"
+            id="backFromChatBtn"
+            style="background:#e5e7eb;color:#111827;margin-bottom:15px;border:none;border-radius:12px;padding:10px 16px;font-weight:bold;cursor:pointer;"
+          >
+            ⬅️ back
+          </button>
+          <h2 id="chatSectionTitle">💬 Chat</h2>
         </div>
 
-        <div class="matching-grid">
-
-          <div class="person-card">
-            <img class="person-avatar" src="https://i.pravatar.cc/200?img=44" alt="Maria">
-            <h3>Maria</h3>
-            <p>💚 Matched</p>
-            <div class="actions">
-              <button class="like-btn" data-section="videoSection">📹 Video</button>
+        <div style="display:grid;grid-template-columns:260px 1fr;gap:20px;background:white;border-radius:20px;border:1px solid #e5e7eb;padding:20px;min-height:450px;">
+          <!-- MATCHES CONVERSATION LIST -->
+          <div style="border-right:1px solid #e5e7eb;padding-right:15px;">
+            <h3 style="font-size:16px;margin-bottom:15px;color:#374151;" id="conversationsTitle">Conversations</h3>
+            <div id="chatMatchesList" style="display:flex;flex-direction:column;gap:10px;max-height:400px;overflow-y:auto;">
+              <!-- Dynamic match items -->
             </div>
           </div>
 
+          <!-- ACTIVE CHAT AREA -->
+          <div style="display:flex;flex-direction:column;height:100%;">
+            <div id="activeChatHeader" style="padding-bottom:12px;border-bottom:1px solid #e5e7eb;margin-bottom:12px;font-weight:bold;font-size:16px;">
+              Select a conversation
+            </div>
+
+            <div id="chatMessagesContainer" style="flex:1;min-height:260px;max-height:350px;overflow-y:auto;display:flex;flex-direction:column;gap:10px;padding:10px;background:#f9fafb;border-radius:12px;margin-bottom:15px;">
+              <div style="text-align:center;color:#6b7280;margin-auto;" id="chatSelectPrompt">Select a match from the left to start messaging</div>
+            </div>
+
+            <form id="chatForm" onsubmit="return false;" style="display:flex;flex-direction:column;gap:8px;">
+              <div style="display:flex;gap:10px;">
+                <input
+                  type="text"
+                  id="chatMessageInput"
+                  maxlength="2000"
+                  placeholder="Type a message..."
+                  disabled
+                  style="flex:1;padding:12px;border:1px solid #d1d5db;border-radius:12px;outline:none;"
+                >
+                <button
+                  type="button"
+                  id="sendMessageBtn"
+                  disabled
+                  style="background:#2563eb;color:white;padding:12px 20px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;"
+                >
+                  Send
+                </button>
+              </div>
+              <div style="display:flex;justify-content:space-between;font-size:12px;color:#6b7280;">
+                <span id="chatStatus"></span>
+                <span id="chatCharCounter">0 / 2000</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS SECTION -->
+      <section id="settingsSection" class="home-section" style="display:none;">
+        <div class="section-title">
+          <button
+            type="button"
+            id="backFromSettingsBtn"
+            style="background:#e5e7eb;color:#111827;margin-bottom:15px;border:none;border-radius:12px;padding:10px 16px;font-weight:bold;cursor:pointer;"
+          >
+            ⬅️ back
+          </button>
+          <h2 id="settingsTitle">⚙️ Settings</h2>
         </div>
 
-      </div>
+        <div style="background:white;border-radius:20px;padding:25px;border:1px solid #e5e7eb;max-width:550px;">
+          <form id="settingsForm" onsubmit="return false;">
+            <div style="margin-bottom:15px;">
+              <label for="dashUsername" style="display:block;margin-bottom:6px;font-weight:bold;font-size:14px;" id="dashUsernameLabel">Username</label>
+              <input type="text" id="dashUsername" minlength="3" maxlength="24" pattern="[A-Za-z0-9_]{3,24}" style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;">
+              <span style="font-size:12px;color:#6b7280;" id="dashUsernameHint">3-24 characters: letters, numbers or _</span>
+            </div>
+
+            <div style="margin-bottom:15px;">
+              <label for="dashFullName" style="display:block;margin-bottom:6px;font-weight:bold;font-size:14px;" id="dashFullNameLabel">Full Name</label>
+              <input type="text" id="dashFullName" style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;">
+            </div>
+
+            <div style="margin-bottom:15px;">
+              <label for="dashAge" style="display:block;margin-bottom:6px;font-weight:bold;font-size:14px;" id="dashAgeLabel">Age</label>
+              <input type="number" id="dashAge" min="18" max="100" style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;">
+            </div>
+
+            <div style="margin-bottom:15px;">
+              <label for="dashGender" style="display:block;margin-bottom:6px;font-weight:bold;font-size:14px;" id="dashGenderLabel">Gender</label>
+              <select id="dashGender" style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;">
+                <option value="">Select gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+            </div>
+
+            <div style="margin-bottom:20px;">
+              <label for="dashAvatarUrl" style="display:block;margin-bottom:6px;font-weight:bold;font-size:14px;" id="dashAvatarLabel">Avatar URL</label>
+              <input type="url" id="dashAvatarUrl" placeholder="https://..." style="width:100%;padding:12px;border:1px solid #d1d5db;border-radius:10px;">
+            </div>
+
+            <button type="button" id="saveSettingsBtn" style="width:100%;background:#2563eb;color:white;padding:12px;border:none;border-radius:12px;font-weight:bold;cursor:pointer;">
+              Save Profile
+            </button>
+
+            <div id="settingsStatus" style="margin-top:12px;text-align:center;font-size:14px;min-height:20px;"></div>
+          </form>
+        </div>
+      </section>
 
       <!-- VIDEO CHAT -->
       <section id="videoSection" class="home-section" style="display:none;">
